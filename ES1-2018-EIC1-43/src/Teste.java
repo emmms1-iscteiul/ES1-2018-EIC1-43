@@ -1,8 +1,7 @@
-
 public class Teste {
 
 	public static void main(String[] args) {
-		System.out.println("Teste");
+		new App(new Gui(), new Facebook(), new Twitter());
 
 	}
 
