@@ -29,7 +29,7 @@ public class Main {
 			URLConnection conn = url.openConnection();
 			conn.connect();
 			conn.getInputStream().close();
-			new App(new Gui(), new Facebook(), new Twitter());
+			new App(new newGui(), new Facebook(), new Twitter());
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {

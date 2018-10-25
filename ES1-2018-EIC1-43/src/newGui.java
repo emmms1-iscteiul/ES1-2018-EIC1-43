@@ -23,7 +23,7 @@ import javax.swing.WindowConstants;
  * Enables interaction with user
  * 
  */
-public class Gui {
+public class newGui {
 
 	private App app = new App(this,new Facebook() , new Twitter());
 	
@@ -51,7 +51,7 @@ public class Gui {
 	 * 
 	 */
 	
-	public Gui() {
+	public newGui() {
 		
 		resultsFrame = new JFrame("Bom Dia Academia (BDA)");
 		resultsFrame.setMinimumSize(new Dimension(1000, 600));

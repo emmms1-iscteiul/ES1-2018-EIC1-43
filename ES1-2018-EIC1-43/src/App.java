@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
  */
 public class App {
 
-	private Gui gui;
+	private newGui gui;
 	private Facebook facebook;
 	private Twitter twitter;
 	private Boolean internetConnected = false;
@@ -23,7 +23,7 @@ public class App {
 	 * @param twitter
 	 */
 	
-	public App(Gui gui, Facebook facebook, Twitter twitter) {
+	public App(newGui gui, Facebook facebook, Twitter twitter) {
 		this.gui = gui;
 		this.facebook = facebook;
 		this.twitter = twitter;
@@ -31,11 +31,11 @@ public class App {
 		this.gui.setApp(this);
 	}
 
-	public Gui getGui() {
+	public newGui getGui() {
 		return gui;
 	}
 
-	public void setGui(Gui gui) {
+	public void setGui(newGui gui) {
 		this.gui = gui;
 	}
 

@@ -1,5 +1,14 @@
 
 
+
+
+
+
+
+
+
+
+
 import static org.junit.Assume.assumeNotNull;
 import static org.junit.Assume.assumeTrue;
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 class Teste {
 
-	private Gui gui;
+	private newGui gui;
 	private Facebook facebook;
 	private Twitter twitter;
 	private App app;
@@ -18,7 +27,7 @@ class Teste {
 	@Test
 	public void Test() {
 		
-		gui = new Gui();
+		gui = new newGui();
 		facebook = new Facebook();
 		twitter = new Twitter();
 		app = new App(gui,facebook,twitter);
