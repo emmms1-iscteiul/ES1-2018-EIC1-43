@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 
-=======
-public class Teste {
->>>>>>> branch 'master' of https://github.com/emmms1-iscteiul/ES1-2018-EIC1-43
-
-<<<<<<< HEAD
 
 
 
@@ -22,7 +16,7 @@ import org.junit.jupiter.api.Test;
 
 class Teste {
 
-	private newGui gui;
+	private NewGui gui;
 	private Facebook facebook;
 	private Twitter twitter;
 	private App app;
@@ -32,7 +26,7 @@ class Teste {
 	@Test
 	public void Test() {
 		
-		gui = new newGui();
+		gui = new NewGui();
 		facebook = new Facebook();
 		twitter = new Twitter();
 		app = new App(gui,facebook,twitter);
@@ -63,10 +57,6 @@ class Teste {
 		gui.postFrameContent();
 		assumeNotNull(gui.getSendFrame());
 		assumeNotNull(gui.getTxtSend());
-=======
-	public static void main(String[] args) {
-		new Gui();
->>>>>>> branch 'master' of https://github.com/emmms1-iscteiul/ES1-2018-EIC1-43
 		
 	}
 
