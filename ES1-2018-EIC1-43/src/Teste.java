@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 
+=======
+public class Teste {
+>>>>>>> branch 'master' of https://github.com/emmms1-iscteiul/ES1-2018-EIC1-43
 
+<<<<<<< HEAD
 
 
 
@@ -58,6 +63,10 @@ class Teste {
 		gui.postFrameContent();
 		assumeNotNull(gui.getSendFrame());
 		assumeNotNull(gui.getTxtSend());
+=======
+	public static void main(String[] args) {
+		new Gui();
+>>>>>>> branch 'master' of https://github.com/emmms1-iscteiul/ES1-2018-EIC1-43
 		
 	}
 
