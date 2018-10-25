@@ -6,7 +6,7 @@ import java.net.URLConnection;
 import javax.swing.JOptionPane;
 
 /**
- * 
+ *
  * 
  * Class which starts the program
  * 
