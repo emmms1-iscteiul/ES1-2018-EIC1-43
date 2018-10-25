@@ -5,6 +5,15 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
+
+/**
+ * 
+ * 
+ * Class that represents twitter properties
+ * and saves its attributes
+ * 
+ *
+ */
 public class Twitter {
 
 	private static final String source = "ISCTE";
@@ -12,6 +21,11 @@ public class Twitter {
 	private ArrayList<String> meTweets = new ArrayList<String>();
 	private twitter4j.Twitter twitter;
 	
+	/**
+	 * 
+	 * Default Constructor
+	 * 
+	 */
 	
 	public Twitter() {
 		try {
@@ -50,6 +64,13 @@ public class Twitter {
 		return this.meTweets;
 	}
 	
+	/**
+	 * 
+	 * Sends tweet which means twitter status update
+	 * 
+	 * @param s
+	 */
+	
 	public void sendTweet(String s) {
 		try {
 			twitter.updateStatus(s);
@@ -57,6 +78,12 @@ public class Twitter {
 			System.out.println("Erro ao enviar tweet");
 		}	
 	}
+	
+	/**
+	 * 
+	 * Updates app info about current tweets online
+	 * 
+	 */
 	
 	public void updateTwitter() {
 		iscteTweets = new ArrayList<String>();
@@ -79,4 +106,22 @@ public class Twitter {
 		} catch (TwitterException e) {
 		}
 	}
+
+	public twitter4j.Twitter getTwitter() {
+		return twitter;
+	}
+
+	public void setTwitter(twitter4j.Twitter twitter) {
+		this.twitter = twitter;
+	}
+
+	public void setIscteTweets(ArrayList<String> iscteTweets) {
+		this.iscteTweets = iscteTweets;
+	}
+
+	public void setMeTweets(ArrayList<String> meTweets) {
+		this.meTweets = meTweets;
+	}
+	
+	
 }
