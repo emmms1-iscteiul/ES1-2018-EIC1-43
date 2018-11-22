@@ -1,15 +1,37 @@
+package EIC1_43.BDA;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+
+/**
+ * 
+ * 
+ * Class responsible for checking app internet connection state
+ *
+ */
 public class InternetConnectionChecker extends Thread {
 
 	private App app;
+	
+	
+	/**
+	 * 
+	 * Default constructor 
+	 * 
+	 * @param app
+	 */
 
 	public InternetConnectionChecker(App app) {
 		this.app = app;
 	}
+	
+	/**
+	 * 
+	 * Verifies internet connection state
+	 * 
+	 */
 
 	public void run() {
 		try {

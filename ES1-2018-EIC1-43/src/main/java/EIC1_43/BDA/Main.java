@@ -1,3 +1,4 @@
+package EIC1_43.BDA;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -5,8 +6,23 @@ import java.net.URLConnection;
 
 import javax.swing.JOptionPane;
 
-public class Teste {
+/**
+ *
+ * 
+ * Class which starts the program
+ * 
+ *
+ */
+public class Main {
 
+	
+	/**
+	 * 
+	 * runs application
+	 * 
+	 * @param args
+	 */
+	
 	public static void main(String[] args) {
 		try {
 			URL url = new URL("http://www.google.com");
@@ -17,7 +33,7 @@ public class Teste {
 		} catch (MalformedURLException e) {
 			throw new RuntimeException(e);
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Sem Internet" + "\n" + "Conecte-se antes de iniciar a aplicação", "", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Sem Internet" + "\n" + "Conecte-se antes de iniciar a aplicaï¿½ï¿½o", "", JOptionPane.INFORMATION_MESSAGE);
 
 		}
 		
