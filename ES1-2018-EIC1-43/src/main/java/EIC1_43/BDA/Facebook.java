@@ -1,5 +1,7 @@
 package EIC1_43.BDA;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.restfb.Connection;
@@ -10,15 +12,13 @@ import com.restfb.types.FacebookType;
 import com.restfb.types.Post;
 import com.restfb.types.User;
 
-import twitter4j.TwitterException;
-
 
 public class Facebook {
 
 	private String accessToken;
 	private User myUser;
 	private FacebookClient fbClient;
-	private ArrayList<String> posts = new ArrayList<String>();
+	private ArrayList<FacebookMessage> posts = new ArrayList<FacebookMessage>();
 	
 	
 	public void post(String post) {
@@ -30,13 +30,23 @@ public class Facebook {
 		List<Post> newsfeed = result.getData();
 		for (Post aFeed : newsfeed) {
 			if (aFeed.getMessage() != null) {
-				System.out.println(aFeed.getMessage());
-				posts.add(aFeed.getMessage());
+				// Cria e adiciona à lista posts, objectos do tipo FacebookMessage para todos os resultados obtidos do facebook
+				FacebookMessage facebookMessage = new FacebookMessage(aFeed.getCreatedTime(), aFeed.getMessage()); 
+				posts.add(facebookMessage);
 			}
 		}
+		// Compara os objectos FacebookMessage por data e ordena os resultados do mais recente para o mais antigo
+		Collections.sort(posts, new Comparator<FacebookMessage>() {
+
+			@Override
+			public int compare(FacebookMessage arg0, FacebookMessage arg1) {
+				return arg1.getData().compareTo(arg0.getData());
+			}
+			
+		});
 	}
 
-	public ArrayList<String> getPosts() {
+	public ArrayList<FacebookMessage> getPosts() {
 		return this.posts;
 	}
 
@@ -68,7 +78,7 @@ public class Facebook {
 		return accessToken;
 	}
 
-	public void setPosts(ArrayList<String> posts) {
+	public void setPosts(ArrayList<FacebookMessage> posts) {
 		this.posts = posts;
 	}
 	
@@ -81,3 +91,4 @@ public class Facebook {
 		myUser = fbClient.fetchObject("me", User.class);
 	}
 }
+

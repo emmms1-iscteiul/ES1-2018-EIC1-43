@@ -97,34 +97,15 @@ public class App {
 	 * Adds tweets into GUI
 	 */
 	public void addTweetsIntoGui() {
-		String limit = "";
-		ArrayList<String> iscte = twitter.getIscteTweets();
-		ArrayList<String> me = twitter.getMeTweets();
-		for (String s : me) {
 
-			for (int i = 0; i < 70; i++) {
-				if (s.length() > i) {
-					limit = limit + s.charAt(i);
-				} else {
-					break;
-				}
-			}
-			this.gui.getModelList().addElement("  me:  " + limit);
-			limit = "";
+		ArrayList<TwitterMessage> iscte = twitter.getIscteTweets();
+		ArrayList<TwitterMessage> me = twitter.getMeTweets();
+		for (TwitterMessage s : me) {
+			this.gui.getModelList().addElement("  me:  " + s.ObjectRepresention());
 		}
-		for (String s : iscte) {
-
-			for (int i = 0; i < 70; i++) {
-				if (s.length() > i) {
-					limit = limit + s.charAt(i);
-				} else {
-					break;
-				}
-			}
-			this.gui.getModelList().addElement("ISCTE: " + limit);
-			limit = "";
+		for (TwitterMessage s : iscte) {
+			this.gui.getModelList().addElement("ISCTE: " + s.ObjectRepresention());
 		}
-
 	}
 
 	/**
@@ -136,9 +117,9 @@ public class App {
 
 	public String showTweetOnGui(int i) {
 		if (i < twitter.getMeTweets().size()) {
-			return twitter.getMeTweets().get(i);
+			return twitter.getMeTweets().get(i).getContent();
 		} else {
-			return twitter.getIscteTweets().get(i - twitter.getMeTweets().size());
+			return twitter.getIscteTweets().get(i - twitter.getMeTweets().size()).getContent();
 		}
 	}
 
@@ -151,7 +132,7 @@ public class App {
 	 */
 
 	public String showPostOnGui(int i) {
-		return facebook.getPosts().get(i);
+		return facebook.getPosts().get(i).getContent();
 	}
 
 	/**
@@ -160,19 +141,10 @@ public class App {
 	 */
 
 	public void addPostsIntoGui() {
-		String limit = "";
-		ArrayList<String> a = facebook.getPosts();
-		for (String s : a) {
 
-			for (int i = 0; i < 70; i++) {
-				if (s.length() > i) {
-					limit = limit + s.charAt(i);
-				} else {
-					break;
-				}
-			}
-			this.gui.getModelList().addElement("  me:  " + limit);
-			limit = "";
+		ArrayList<FacebookMessage> a = facebook.getPosts();
+		for (FacebookMessage s : a) {
+			this.gui.getModelList().addElement("  me:  " + s.ObjectRepresention());
 		}
 	}
 
@@ -288,6 +260,8 @@ public class App {
 
 	public void disconnect() {
 		this.gui.clearList();
+		JOptionPane.showMessageDialog(null, "Fim da ligação ao serviço com sucesso.", "",
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public void connectEmail(String username, String password) throws Exception {
@@ -301,11 +275,26 @@ public class App {
 			JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
 					JOptionPane.INFORMATION_MESSAGE);
 		} else {
-			String accessToken = JOptionPane.showInputDialog("Introduza o access Token");
-			if (accessToken != null) {
+			boolean isValid = true;
+			String accessToken = "";
+			String escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
+			if (escolha != null && (escolha.equals("s") || escolha.equals("S"))) {
+				accessToken = "EAADfa40pTAwBAHVrPBdHGgr9JeN9XFqQVXvfcop6PUxl4Oa9nsDFD3A8lgW0sesvZAWDZBZCSj5sp0uhTiIQDFhWz"
+						+ "3sB4sFfCVA6bcLJrZCk6ZAUFxNBtqnrUvosZAOuKTNCdZB9El8tubEPbJJ9RaKpIQuW3c0JIEwpvnSMdzwVwZDZD";
+			} else if (escolha != null && (escolha.equals("n") || escolha.equals("N"))) {
+				accessToken = JOptionPane.showInputDialog("Introduza o access Token");
+			} else if (escolha != null) {
+				JOptionPane.showMessageDialog(null, "Resposta Invalida", "", JOptionPane.INFORMATION_MESSAGE);
+				isValid = false;
+			} else {
+				isValid = false;
+			}
+			if (isValid && accessToken != null) {
 				try {
 					connectFacebook(accessToken);
-					this.gui.addDisconnect();
+					JOptionPane.showMessageDialog(null, "Ligacao Estabelecida com Sucesso", "",
+							JOptionPane.INFORMATION_MESSAGE);
+
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "Dados de acesso ao facebook invalidos", "",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -338,7 +327,6 @@ public class App {
 			try {
 				if (isValid) {
 					connectEmail(username, password);
-					this.gui.addDisconnect();
 					JOptionPane.showMessageDialog(null, "Ligacao Estabelecida com Sucesso", "",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
@@ -366,8 +354,7 @@ public class App {
 			String assunto = JOptionPane.showInputDialog("Introduza o assunto do email");
 			try {
 				post(destino, assunto);
-				JOptionPane.showMessageDialog(null, "Email enviado com sucesso!", "",
-						JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Email enviado com sucesso!", "", JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(null, "Dados incorretos. Erro ao enviar email.", "",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -376,21 +363,20 @@ public class App {
 			try {
 				post(null, null);
 			} catch (Exception e1) {
-				JOptionPane.showMessageDialog(null, "Erro ao enviar mensagem", "",
-						JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Erro ao enviar mensagem", "", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}
-	
+
 	public void setDc() {
-		this.facebookConnected = false;
-		this.twitterConnected = false;
-		this.emailConnected = false;
-		disconnect();
-		this.gui.getResultsFrame().remove(this.gui.getDisconnectButton());
-		this.gui.getResultsFrame().repaint();
+		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
+			this.facebookConnected = false;
+			this.twitterConnected = false;
+			this.emailConnected = false;
+			disconnect();
+		}
 	}
-	
+
 	public void twitterValidation() {
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
 			JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
@@ -416,6 +402,8 @@ public class App {
 					connectTwitter(info);
 					this.gui.getResultsFrame().add(this.gui.getDisconnectButton());
 					this.gui.getResultsFrame().repaint();
+					JOptionPane.showMessageDialog(null, "Ligacao Estabelecida com Sucesso", "",
+							JOptionPane.INFORMATION_MESSAGE);
 				}
 
 			} catch (TwitterException e1) {

@@ -1,6 +1,8 @@
 package EIC1_43.BDA;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -20,8 +22,8 @@ import twitter4j.conf.ConfigurationBuilder;
 public class Twitter {
 
 	private static final String source = "ISCTE";
-	private ArrayList<String> iscteTweets = new ArrayList<String>();
-	private ArrayList<String> meTweets = new ArrayList<String>();
+	private ArrayList<TwitterMessage> iscteTweets = new ArrayList<TwitterMessage>();
+	private ArrayList<TwitterMessage> meTweets = new ArrayList<TwitterMessage>();
 	private twitter4j.Twitter twitter;
 	private ConfigurationBuilder cb;
 	private TwitterFactory tf;
@@ -36,11 +38,11 @@ public class Twitter {
 		return source;
 	}
 
-	public ArrayList<String> getIscteTweets() {
+	public ArrayList<TwitterMessage> getIscteTweets() {
 		return this.iscteTweets;
 	}
 
-	public ArrayList<String> getMeTweets() {
+	public ArrayList<TwitterMessage> getMeTweets() {
 		return this.meTweets;
 	}
 
@@ -51,7 +53,7 @@ public class Twitter {
 	 * @param s
 	 */
 
-	public void sendTweet(String s) {
+	public void sendTweet(String s) throws TwitterException {
 		try {
 			twitter.updateStatus(s);
 		} catch (TwitterException e) {
@@ -67,22 +69,48 @@ public class Twitter {
 	 */
 
 	public void updateTwitter() throws TwitterException {
-		iscteTweets = new ArrayList<String>();
-		meTweets = new ArrayList<String>();
+		iscteTweets = new ArrayList<TwitterMessage>();
+		meTweets = new ArrayList<TwitterMessage>();
 		List<Status> statuses;
 		statuses = twitter.getHomeTimeline();
 
 		for (Status status : statuses) {
 			if (status.getUser().getName() != null && status.getUser().getName().contains("ISCTE")) {
-				iscteTweets.add(status.getText());
+				// Cria e adiciona à lista iscte Tweets objectos do tipo TwitterMessage para todos os resultados obtidos do twitter
+				TwitterMessage twitterMessage = new TwitterMessage (status.getCreatedAt(), status.getText());
+				iscteTweets.add(twitterMessage);
 			}
 		}
+		// Compara os objectos TwitterMessage por data e ordena os resultados do mais antigo para o mais recente
+		Collections.sort(iscteTweets, new Comparator<TwitterMessage>() {
+
+			@Override
+			public int compare(TwitterMessage arg0, TwitterMessage arg1) {
+				return arg1.getData().compareTo(arg0.getData());
+			}
+			
+		});
+		// Inverte a lista iscteTweets por forma a que as mensagens apareçam na interface da mais recente para a mais antiga.
+		Collections.reverse(iscteTweets);
 
 		for (Status status : statuses) {
 			if (status.getUser().getName() != null && status.getUser().getName().contains("ES")) {
-				meTweets.add(status.getText());
+				
+				TwitterMessage twitterMessage = new TwitterMessage (status.getCreatedAt(), status.getText());
+				meTweets.add(twitterMessage);
 			}
 		}
+		
+		Collections.sort(meTweets, new Comparator<TwitterMessage>() {
+
+			@Override
+			public int compare(TwitterMessage arg0, TwitterMessage arg1) {
+				return arg0.getDate().compareTo(arg1.getDate());
+			}
+			
+		});
+		
+		Collections.reverse(meTweets);
 	}
 
 	public twitter4j.Twitter getTwitter() {
@@ -93,12 +121,30 @@ public class Twitter {
 		this.twitter = twitter;
 	}
 
-	public void setIscteTweets(ArrayList<String> iscteTweets) {
+	public void setIscteTweets(ArrayList<TwitterMessage> iscteTweets) {
 		this.iscteTweets = iscteTweets;
 	}
 
-	public void setMeTweets(ArrayList<String> meTweets) {
+	public void setMeTweets(ArrayList<TwitterMessage> meTweets) {
 		this.meTweets = meTweets;
+	}
+	
+	
+
+	public ConfigurationBuilder getCb() {
+		return cb;
+	}
+
+	public void setCb(ConfigurationBuilder cb) {
+		this.cb = cb;
+	}
+
+	public TwitterFactory getTf() {
+		return tf;
+	}
+
+	public void setTf(TwitterFactory tf) {
+		this.tf = tf;
 	}
 
 	public void setInfo(ArrayList<String> info) throws TwitterException {
