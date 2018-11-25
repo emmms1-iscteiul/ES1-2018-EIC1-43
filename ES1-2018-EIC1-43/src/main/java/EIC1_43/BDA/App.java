@@ -141,7 +141,7 @@ public class App {
 	 */
 
 	public void addPostsIntoGui() {
-		
+
 		ArrayList<FacebookMessage> a = facebook.getPosts();
 		for (FacebookMessage s : a) {
 			this.gui.getModelList().addElement("  me:  " + s.ObjectRepresention());
@@ -260,6 +260,8 @@ public class App {
 
 	public void disconnect() {
 		this.gui.clearList();
+		JOptionPane.showMessageDialog(null, "Fim da ligação ao serviço com sucesso.", "",
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public void connectEmail(String username, String password) throws Exception {
@@ -273,11 +275,26 @@ public class App {
 			JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
 					JOptionPane.INFORMATION_MESSAGE);
 		} else {
-			String accessToken = JOptionPane.showInputDialog("Introduza o access Token");
-			if (accessToken != null) {
+			boolean isValid = true;
+			String accessToken = "";
+			String escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
+			if (escolha != null && (escolha.equals("s") || escolha.equals("S"))) {
+				accessToken = "EAADfa40pTAwBAHVrPBdHGgr9JeN9XFqQVXvfcop6PUxl4Oa9nsDFD3A8lgW0sesvZAWDZBZCSj5sp0uhTiIQDFhWz"
+						+ "3sB4sFfCVA6bcLJrZCk6ZAUFxNBtqnrUvosZAOuKTNCdZB9El8tubEPbJJ9RaKpIQuW3c0JIEwpvnSMdzwVwZDZD";
+			} else if (escolha != null && (escolha.equals("n") || escolha.equals("N"))) {
+				accessToken = JOptionPane.showInputDialog("Introduza o access Token");
+			} else if (escolha != null) {
+				JOptionPane.showMessageDialog(null, "Resposta Invalida", "", JOptionPane.INFORMATION_MESSAGE);
+				isValid = false;
+			} else {
+				isValid = false;
+			}
+			if (isValid && accessToken != null) {
 				try {
 					connectFacebook(accessToken);
-					this.gui.addDisconnect();
+					JOptionPane.showMessageDialog(null, "Ligacao Estabelecida com Sucesso", "",
+							JOptionPane.INFORMATION_MESSAGE);
+
 				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "Dados de acesso ao facebook invalidos", "",
 							JOptionPane.INFORMATION_MESSAGE);
@@ -310,7 +327,6 @@ public class App {
 			try {
 				if (isValid) {
 					connectEmail(username, password);
-					this.gui.addDisconnect();
 					JOptionPane.showMessageDialog(null, "Ligacao Estabelecida com Sucesso", "",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
@@ -338,8 +354,7 @@ public class App {
 			String assunto = JOptionPane.showInputDialog("Introduza o assunto do email");
 			try {
 				post(destino, assunto);
-				JOptionPane.showMessageDialog(null, "Email enviado com sucesso!", "",
-						JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Email enviado com sucesso!", "", JOptionPane.INFORMATION_MESSAGE);
 			} catch (Exception e1) {
 				JOptionPane.showMessageDialog(null, "Dados incorretos. Erro ao enviar email.", "",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -348,20 +363,20 @@ public class App {
 			try {
 				post(null, null);
 			} catch (Exception e1) {
-				JOptionPane.showMessageDialog(null, "Erro ao enviar mensagem", "",
-						JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Erro ao enviar mensagem", "", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}
-	
+
 	public void setDc() {
-		this.facebookConnected = false;
-		this.twitterConnected = false;
-		this.emailConnected = false;
-		disconnect();
-		this.gui.getDisconnectButton().setEnabled(false);
+		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
+			this.facebookConnected = false;
+			this.twitterConnected = false;
+			this.emailConnected = false;
+			disconnect();
+		}
 	}
-	
+
 	public void twitterValidation() {
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
 			JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
@@ -385,7 +400,10 @@ public class App {
 			try {
 				if (info.size() != 0) {
 					connectTwitter(info);
-					this.gui.getDisconnectButton().setEnabled(true);
+					this.gui.getResultsFrame().add(this.gui.getDisconnectButton());
+					this.gui.getResultsFrame().repaint();
+					JOptionPane.showMessageDialog(null, "Ligacao Estabelecida com Sucesso", "",
+							JOptionPane.INFORMATION_MESSAGE);
 				}
 
 			} catch (TwitterException e1) {

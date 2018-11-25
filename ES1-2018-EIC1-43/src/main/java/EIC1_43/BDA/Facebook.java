@@ -91,3 +91,4 @@ public class Facebook {
 		myUser = fbClient.fetchObject("me", User.class);
 	}
 }
+

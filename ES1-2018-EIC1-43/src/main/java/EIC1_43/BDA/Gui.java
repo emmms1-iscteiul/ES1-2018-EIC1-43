@@ -148,7 +148,6 @@ public class Gui {
 		disconnectButton = new JButton("DISCONNECT  APP");
 		disconnectButton.setBounds(160, 25, 150, 50);
 		disconnectButton.setBackground(new Color(237,28,36));
-		disconnectButton.setEnabled(false);
 		refreshButton = new JButton(new ImageIcon("images/refresh.png"));
 		refreshButton.setBounds(20, 25, 50, 50);
 		twitterButton = new JButton("   TWITTER", new ImageIcon("images/twitterminiicon.png"));
@@ -312,56 +311,8 @@ public class Gui {
 		this.sendFrame = sendFrame;
 	}
 
-	public JButton getFacebookButton() {
-		return facebookButton;
-	}
-
-	public void setFacebookButton(JButton facebookButton) {
-		this.facebookButton = facebookButton;
-	}
-
-	public JButton getTwitterButton() {
-		return twitterButton;
-	}
-
-	public void setTwitterButton(JButton twitterButton) {
-		this.twitterButton = twitterButton;
-	}
-
-	public JButton getEmailButton() {
-		return emailButton;
-	}
-
-	public void setEmailButton(JButton emailButton) {
-		this.emailButton = emailButton;
-	}
-
-	public JButton getBtnDisplay() {
-		return btnDisplay;
-	}
-
-	public void setBtnDisplay(JButton btnDisplay) {
-		this.btnDisplay = btnDisplay;
-	}
-
-	public JButton getBtnPost() {
-		return btnPost;
-	}
-
-	public void setBtnPost(JButton btnPost) {
-		this.btnPost = btnPost;
-	}
-
 	public JButton getDisconnectButton() {
 		return disconnectButton;
 	}
-
-	public void setDisconnectButton(JButton disconnectButton) {
-		this.disconnectButton = disconnectButton;
-	}
-
 	
-	public void addDisconnect() {
-		disconnectButton.setEnabled(false);
-	}
 }

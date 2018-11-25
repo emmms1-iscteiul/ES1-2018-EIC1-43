@@ -53,7 +53,7 @@ public class Twitter {
 	 * @param s
 	 */
 
-	public void sendTweet(String s) {
+	public void sendTweet(String s) throws TwitterException {
 		try {
 			twitter.updateStatus(s);
 		} catch (TwitterException e) {
@@ -127,6 +127,24 @@ public class Twitter {
 
 	public void setMeTweets(ArrayList<TwitterMessage> meTweets) {
 		this.meTweets = meTweets;
+	}
+	
+	
+
+	public ConfigurationBuilder getCb() {
+		return cb;
+	}
+
+	public void setCb(ConfigurationBuilder cb) {
+		this.cb = cb;
+	}
+
+	public TwitterFactory getTf() {
+		return tf;
+	}
+
+	public void setTf(TwitterFactory tf) {
+		this.tf = tf;
 	}
 
 	public void setInfo(ArrayList<String> info) throws TwitterException {
