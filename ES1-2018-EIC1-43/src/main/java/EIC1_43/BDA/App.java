@@ -93,6 +93,14 @@ public class App {
 		this.emailConnected = emailConnected;
 	}
 
+	public EmailSessionBean getEmail() {
+		return email;
+	}
+
+	public void setEmail(EmailSessionBean email) {
+		this.email = email;
+	}
+
 	/**
 	 * Adds tweets into GUI
 	 */
@@ -119,8 +127,11 @@ public class App {
 		if (i < twitter.getMeTweets().size()) {
 			return twitter.getMeTweets().get(i).getContent();
 		} else {
-			return twitter.getIscteTweets().get(i - twitter.getMeTweets().size()).getContent();
+			if (twitter.getIscteTweets() != null && twitter.getIscteTweets().size() > 0) {
+				return twitter.getIscteTweets().get(i - twitter.getMeTweets().size()).getContent();
+			}
 		}
+		return "";
 	}
 
 	/**
@@ -170,14 +181,21 @@ public class App {
 	 * 
 	 */
 
-	public void displayContent() {
-		if (displayValidation()) {
+	public void displayContent(boolean isTest) {
+		if (displayValidation() || isTest) {
 			if (this.twitterConnected && !this.facebookConnected) {
 				this.gui.resultsFrameContent();
-				this.gui.getTxtBody().setText(showTweetOnGui(this.gui.getList().getSelectedIndex()));
+				if (!isTest) {
+					this.gui.getTxtBody().setText(showTweetOnGui(this.gui.getList().getSelectedIndex()));
+				}
 			} else if (this.facebookConnected && !this.twitterConnected) {
 				this.gui.resultsFrameContent();
-				this.gui.getTxtBody().setText(showPostOnGui(this.gui.getList().getSelectedIndex()));
+				if (isTest) {
+					this.gui.getTxtBody().setText(showPostOnGui(this.getFacebook().getPosts().size() - 1));
+				} else {
+					this.gui.getTxtBody().setText(showPostOnGui(this.gui.getList().getSelectedIndex()));
+				}
+
 			}
 		}
 
@@ -260,8 +278,7 @@ public class App {
 
 	public void disconnect() {
 		this.gui.clearList();
-		JOptionPane.showMessageDialog(null, "Fim da ligação ao serviço com sucesso.", "",
-				JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Fim da ligação ao serviço.", "", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public void connectEmail(String username, String password) throws Exception {
@@ -270,20 +287,33 @@ public class App {
 		this.emailConnected = true;
 	}
 
-	public void facebookValidation() {
+	public void setDc() {
+		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
+			this.facebookConnected = false;
+			this.twitterConnected = false;
+			this.emailConnected = false;
+			disconnect();
+		}
+	}
+
+	public void facebookValidation(String test) {
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
 			JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
 					JOptionPane.INFORMATION_MESSAGE);
 		} else {
 			boolean isValid = true;
 			String accessToken = "";
-			String escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
-			if (escolha != null && (escolha.equals("s") || escolha.equals("S"))) {
+			String escolha = "";
+			if (test == null) {
+				escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
+			}
+			if ((escolha != null && (escolha.equals("s") || escolha.equals("S")))
+					|| (test != null && test.equals("s"))) {
 				accessToken = "EAADfa40pTAwBAHVrPBdHGgr9JeN9XFqQVXvfcop6PUxl4Oa9nsDFD3A8lgW0sesvZAWDZBZCSj5sp0uhTiIQDFhWz"
 						+ "3sB4sFfCVA6bcLJrZCk6ZAUFxNBtqnrUvosZAOuKTNCdZB9El8tubEPbJJ9RaKpIQuW3c0JIEwpvnSMdzwVwZDZD";
 			} else if (escolha != null && (escolha.equals("n") || escolha.equals("N"))) {
 				accessToken = JOptionPane.showInputDialog("Introduza o access Token");
-			} else if (escolha != null) {
+			} else if (escolha != null || test.equals("lol")) {
 				JOptionPane.showMessageDialog(null, "Resposta Invalida", "", JOptionPane.INFORMATION_MESSAGE);
 				isValid = false;
 			} else {
@@ -303,7 +333,7 @@ public class App {
 		}
 	}
 
-	public void emailValidation() {
+	public void emailValidation(String test) {
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
 			JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
 					JOptionPane.INFORMATION_MESSAGE);
@@ -311,14 +341,17 @@ public class App {
 			boolean isValid = true;
 			String username = "";
 			String password = "";
-			String escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
-			if (escolha != null && (escolha.equals("s") || escolha.equals("S"))) {
+			String escolha = "";
+			if (test == null) {
+				escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
+			}
+			if ((escolha != null && (escolha.equals("s") || escolha.equals("S"))) || test != null && test.equals("s")) {
 				username = "ola123ola123ola123software@gmail.com";
 				password = "modfzrjlqjmkruhp";
 			} else if (escolha != null && (escolha.equals("n") || escolha.equals("N"))) {
 				username = JOptionPane.showInputDialog("Introduza o email");
 				password = JOptionPane.showInputDialog("Introduza a password da aplicacao");
-			} else if (escolha != null) {
+			} else if (escolha != null || (test != null && test.equals("ola"))) {
 				JOptionPane.showMessageDialog(null, "Resposta Invalida", "", JOptionPane.INFORMATION_MESSAGE);
 				isValid = false;
 			} else {
@@ -348,10 +381,21 @@ public class App {
 
 	}
 
-	public void sendValidation() {
+	public void sendValidation(String test) {
+		String destino = "";
+		String assunto = "";
 		if (this.emailConnected) {
-			String destino = JOptionPane.showInputDialog("Introduza o email destino");
-			String assunto = JOptionPane.showInputDialog("Introduza o assunto do email");
+			if (test == null) {
+				destino = JOptionPane.showInputDialog("Introduza o email destino");
+				assunto = JOptionPane.showInputDialog("Introduza o assunto do email");
+			}
+			if (test != null && test.equals("mail")) {
+				destino = "ola123ola123ola123software@gmail.com";
+				assunto = "ola amigo";
+			} else if (test != null && test.equals("mailFail")) {
+				destino = "vai falhar";
+				assunto = "adeus amigo";
+			}
 			try {
 				post(destino, assunto);
 				JOptionPane.showMessageDialog(null, "Email enviado com sucesso!", "", JOptionPane.INFORMATION_MESSAGE);
@@ -368,23 +412,18 @@ public class App {
 		}
 	}
 
-	public void setDc() {
-		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
-			this.facebookConnected = false;
-			this.twitterConnected = false;
-			this.emailConnected = false;
-			disconnect();
-		}
-	}
-
-	public void twitterValidation() {
+	public void twitterValidation(String test) {
+		ArrayList<String> info = new ArrayList<String>();
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
 			JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
 					JOptionPane.INFORMATION_MESSAGE);
 		} else {
-			ArrayList<String> info = new ArrayList<String>();
-			String escolha = JOptionPane.showInputDialog("Pretende aceder ao Twitter como default user? [s/n]");
-			if (escolha != null && (escolha.equals("s") || escolha.equals("S"))) {
+			String escolha = "";
+			if (test == null) {
+				escolha = JOptionPane.showInputDialog("Pretende aceder ao Twitter como default user? [s/n]");
+			}
+			if ((escolha != null && (escolha.equals("s") || escolha.equals("S")))
+					|| (test != null && test.equals("s"))) {
 				info.add("bPcMjzld5PjWFDYMl401Ak0kw");
 				info.add(1, "V6gRA7z4HTpaiuNaoIYZ6wDxFkaEEr4jZRLOOWYOe8fdHP9Ita");
 				info.add(2, "1050480069683150848-Fjr0lz1c6jnRMCzg5VMr2xlhBD0hju");
@@ -394,10 +433,18 @@ public class App {
 				info.add(1, JOptionPane.showInputDialog("Introduza AuthConsumerSecret"));
 				info.add(2, JOptionPane.showInputDialog("Introduza AuthAccessToken"));
 				info.add(3, JOptionPane.showInputDialog("Introduza AuthAccessTokenSecret"));
-			} else if (escolha != null) {
+			} else if (escolha != null || (test != null && test.equals("ola"))) {
 				JOptionPane.showMessageDialog(null, "Resposta Invalida", "", JOptionPane.INFORMATION_MESSAGE);
 			}
+
 			try {
+				if (test != null && !test.equals("s")) {
+					info.add("Penso");
+					info.add(1, "que");
+					info.add(2, "isto");
+					info.add(3, "falha");
+					connectTwitter(info);
+				}
 				if (info.size() != 0) {
 					connectTwitter(info);
 					this.gui.getResultsFrame().add(this.gui.getDisconnectButton());

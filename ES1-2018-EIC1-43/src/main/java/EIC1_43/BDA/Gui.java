@@ -130,7 +130,7 @@ public class Gui {
 
 		sendButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				app.sendValidation();
+				app.sendValidation(null);
 			}
 
 		});
@@ -197,20 +197,20 @@ public class Gui {
 
 		btnDisplay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				app.displayContent();
+				app.displayContent(false);
 			}
 
 		});
 
 		facebookButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				app.facebookValidation();	
+				app.facebookValidation(null);	
 			}	
 		});
 
 		twitterButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				app.twitterValidation();
+				app.twitterValidation(null);
 			}
 		});
 
@@ -236,7 +236,7 @@ public class Gui {
 
 		this.emailButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				app.emailValidation();
+				app.emailValidation(null);
 			}
 
 		});
@@ -311,51 +311,9 @@ public class Gui {
 		this.sendFrame = sendFrame;
 	}
 
-	public JButton getFacebookButton() {
-		return facebookButton;
-	}
-
-	public void setFacebookButton(JButton facebookButton) {
-		this.facebookButton = facebookButton;
-	}
-
-	public JButton getTwitterButton() {
-		return twitterButton;
-	}
-
-	public void setTwitterButton(JButton twitterButton) {
-		this.twitterButton = twitterButton;
-	}
-
-	public JButton getEmailButton() {
-		return emailButton;
-	}
-
-	public void setEmailButton(JButton emailButton) {
-		this.emailButton = emailButton;
-	}
-
-	public JButton getBtnDisplay() {
-		return btnDisplay;
-	}
-
-	public void setBtnDisplay(JButton btnDisplay) {
-		this.btnDisplay = btnDisplay;
-	}
-
-	public JButton getBtnPost() {
-		return btnPost;
-	}
-
-	public void setBtnPost(JButton btnPost) {
-		this.btnPost = btnPost;
-	}
-
 	public JButton getDisconnectButton() {
 		return disconnectButton;
 	}
 
-	public void setDisconnectButton(JButton disconnectButton) {
-		this.disconnectButton = disconnectButton;
-	}
+	
 }

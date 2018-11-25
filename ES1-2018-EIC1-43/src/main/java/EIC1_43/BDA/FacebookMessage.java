@@ -7,13 +7,18 @@ public class FacebookMessage extends Message {
 	private Date date;
 	private String data;
 	private String hora;
-	
+	String title;
+
 	public FacebookMessage(Date date, String content) {
 		super(content);
 		this.date = date;
 		tratarDataHora();
 	}
-	
+
+	public String getTitle() {
+		return title;
+	}
+
 	public Date getDate() {
 		return date;
 	}
@@ -25,32 +30,47 @@ public class FacebookMessage extends Message {
 	public String getHora() {
 		return hora;
 	}
-	
-	private String Title () {
-		
-		String title = "";
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
+	public void setHora(String hora) {
+		this.hora = hora;
+	}
+
+	public String Title() {
+
+		title = "";
 		for (int i = 0; i < 30; i++) {
-			if(i<super.getContent().length()) {
+			if (i < super.getContent().length()) {
 				title = title + super.getContent().charAt(i);
 			} else {
 				break;
 			}
 		}
-		
+
 		return title;
 	}
-	
+
 	@Override
 	public void tratarDataHora() {
-		
+
 		String dateDate = date.toString();
-		String week = ""; String mes = ""; String day = ""; String year = "";
+		String week = "";
+		String mes = "";
+		String day = "";
+		String year = "";
 		String time = "";
-		
+
 		for (int i = 0; i != dateDate.length(); i++) {
 			if (i < 3) {
 				week = week + dateDate.charAt(i);
-			} 
+			}
 			if (i > 3 && i < 7) {
 				mes = mes + dateDate.charAt(i);
 			}
@@ -64,14 +84,13 @@ public class FacebookMessage extends Message {
 				year = year + dateDate.charAt(i);
 			}
 		}
-		
+
 		data = week + " " + day + " " + mes + " " + year;
 		hora = time;
 	}
-	
-	public String ObjectRepresention () {
-		
-		String object =  Title() + "               " + data + "   " + hora;
+
+	public String ObjectRepresention() {
+		String object = Title() + "               " + data + "   " + hora;
 		return object;
 	}
 }

@@ -21,9 +21,11 @@ public class Facebook {
 	private ArrayList<FacebookMessage> posts = new ArrayList<FacebookMessage>();
 	
 	
-	public void post(String post) {
-		fbClient.publish( "me/feed", FacebookType.class, Parameter.with("message", post));
-	}
+// Post: opcao indisponivel 
+	
+//	public void post(String post) {
+//		fbClient.publish( "me/feed", FacebookType.class, Parameter.with("message", post));
+//	}
 	
 	public void updatePosts() throws Exception {
 		Connection<Post> result = fbClient.fetchConnection("me/feed", Post.class);

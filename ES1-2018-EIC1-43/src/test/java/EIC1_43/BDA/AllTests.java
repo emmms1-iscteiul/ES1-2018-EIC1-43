@@ -8,7 +8,9 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
 	EmailTest.class,
 	TwitterTest.class,
+	AppTest.class,
 })
+
 public class AllTests {
 	
 }
