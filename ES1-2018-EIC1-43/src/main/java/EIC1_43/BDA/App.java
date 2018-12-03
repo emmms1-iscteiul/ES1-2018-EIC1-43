@@ -145,6 +145,10 @@ public class App {
 	public String showPostOnGui(int i) {
 		return facebook.getPosts().get(i).getContent();
 	}
+	
+	public String showEmailOnGui(int i) {
+		return email.getMails().get(i).getContent();
+	}
 
 	/**
 	 * Adds facebook posts into GUI
@@ -156,6 +160,13 @@ public class App {
 		ArrayList<FacebookMessage> a = facebook.getPosts();
 		for (FacebookMessage s : a) {
 			this.gui.getModelList().addElement("  me:  " + s.ObjectRepresention());
+		}
+	}
+	
+	public void addEmailsIntoGui() {
+		ArrayList<EmailMessage> array = email.getMails();
+		for (EmailMessage msg : array) {
+			this.gui.getModelList().addElement("  me:  " + msg.ObjectRepresention());
 		}
 	}
 
@@ -179,16 +190,17 @@ public class App {
 	/**
 	 * Displays posts or tweets content to user
 	 * 
+	 * @param isTest verifies if call comes from test
 	 */
 
 	public void displayContent(boolean isTest) {
 		if (displayValidation() || isTest) {
-			if (this.twitterConnected && !this.facebookConnected) {
+			if (this.twitterConnected && !this.facebookConnected && !emailConnected) {
 				this.gui.resultsFrameContent();
 				if (!isTest) {
 					this.gui.getTxtBody().setText(showTweetOnGui(this.gui.getList().getSelectedIndex()));
 				}
-			} else if (this.facebookConnected && !this.twitterConnected) {
+			} else if (this.facebookConnected && !this.twitterConnected && !emailConnected ) {
 				this.gui.resultsFrameContent();
 				if (isTest) {
 					this.gui.getTxtBody().setText(showPostOnGui(this.getFacebook().getPosts().size() - 1));
@@ -196,11 +208,20 @@ public class App {
 					this.gui.getTxtBody().setText(showPostOnGui(this.gui.getList().getSelectedIndex()));
 				}
 
+			} else if(this.emailConnected && !this.facebookConnected && !this.twitterConnected) {
+				this.gui.resultsFrameContent();
+				this.gui.getTxtBody().setText(showEmailOnGui(this.gui.getList().getSelectedIndex()));
 			}
 		}
 
 	}
 
+	/**
+	 * makes display validation
+	 * 
+	 * @return boolean if it's ok to display
+	 */
+	
 	public boolean displayValidation() {
 		return this.gui.getList() != null && !this.gui.getList().isSelectionEmpty();
 	}
@@ -209,6 +230,9 @@ public class App {
 	 * 
 	 * Connects app to facebook
 	 * 
+	 * @param accessToken token needed to connect to facebook
+	 * 
+	 * @throws Exception
 	 */
 
 	public void connectFacebook(String accessToken) throws Exception {
@@ -249,6 +273,9 @@ public class App {
 	 * 
 	 * publish the post or tweet content
 	 * 
+	 * @param destino post destination
+	 * @param assunto post matter
+	 * 
 	 * @throws TwitterException
 	 * 
 	 */
@@ -275,18 +302,39 @@ public class App {
 					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
+	
+	/**
+	 * 
+	 * disconnects app from service
+	 */
 
 	public void disconnect() {
 		this.gui.clearList();
 		JOptionPane.showMessageDialog(null, "Fim da ligação ao serviço.", "", JOptionPane.INFORMATION_MESSAGE);
 	}
+	
+	/**
+	 * connects app to email
+	 * 
+	 * @param username name of email user
+	 * @param password email user application's password
+	 * @throws Exception request is not getting served
+	 *  
+	 */
 
 	public void connectEmail(String username, String password) throws Exception {
 		verifyInternetConnection();
 		email = new EmailSessionBean(username, password);
+		this.email.updateEmail();
 		this.emailConnected = true;
+		addEmailsIntoGui();
+		this.facebookConnected = false;
+		this.twitterConnected = false;
 	}
 
+	/**
+	 * sets application disconnected
+	 */
 	public void setDc() {
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
 			this.facebookConnected = false;
@@ -296,6 +344,11 @@ public class App {
 		}
 	}
 
+	/**
+	 * checks facebook connection
+	 * 
+	 * @param test verifies if call comes from test
+	 */
 	public void facebookValidation(String test) {
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
 			JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
@@ -307,6 +360,7 @@ public class App {
 			if (test == null) {
 				escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
 			}
+			test = "";
 			if ((escolha != null && (escolha.equals("s") || escolha.equals("S")))
 					|| (test != null && test.equals("s"))) {
 				accessToken = "EAADfa40pTAwBAHVrPBdHGgr9JeN9XFqQVXvfcop6PUxl4Oa9nsDFD3A8lgW0sesvZAWDZBZCSj5sp0uhTiIQDFhWz"
@@ -333,6 +387,11 @@ public class App {
 		}
 	}
 
+	/**
+	 * checks email connection 
+	 * 
+	 * @param test checks if call comes from test
+	 */
 	public void emailValidation(String test) {
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
 			JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
@@ -369,6 +428,11 @@ public class App {
 			}
 		}
 	}
+	
+	/**
+	 * checks if post is valid
+	 * 
+	 */
 
 	public void postValidation() {
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
@@ -381,6 +445,11 @@ public class App {
 
 	}
 
+	/**
+	 * checks if send request is valid
+	 * 
+	 * @param test checks if call comes from test scenario
+	 */
 	public void sendValidation(String test) {
 		String destino = "";
 		String assunto = "";
@@ -411,7 +480,12 @@ public class App {
 			}
 		}
 	}
-
+	
+	/**
+	 * checks twitter validation
+	 * 
+	 * @param test checks if call comes from test
+	 */
 	public void twitterValidation(String test) {
 		ArrayList<String> info = new ArrayList<String>();
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {

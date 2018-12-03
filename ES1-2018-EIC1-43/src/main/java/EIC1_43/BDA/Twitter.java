@@ -147,6 +147,13 @@ public class Twitter {
 		this.tf = tf;
 	}
 
+	
+	/**
+	 * sets twitter info
+	 * 
+	 * @param info information necessary to feed configuration builder
+	 * @throws TwitterException thrown in case info's not valid 
+	 */
 	public void setInfo(ArrayList<String> info) throws TwitterException {
 		cb = new ConfigurationBuilder();
 		cb.setOAuthConsumerKey(info.get(0));

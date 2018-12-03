@@ -13,6 +13,11 @@ import com.restfb.types.Post;
 import com.restfb.types.User;
 
 
+/**
+ * 
+ * facebook class. All facebook content remains here
+ *
+ */
 public class Facebook {
 
 	private String accessToken;
@@ -27,6 +32,11 @@ public class Facebook {
 //		fbClient.publish( "me/feed", FacebookType.class, Parameter.with("message", post));
 //	}
 	
+	/**
+	 * updates posts
+	 * 
+	 * @throws Exception thrown in case it's not possible to update posts
+	 */
 	public void updatePosts() throws Exception {
 		Connection<Post> result = fbClient.fetchConnection("me/feed", Post.class);
 		List<Post> newsfeed = result.getData();
@@ -88,6 +98,10 @@ public class Facebook {
 		this.accessToken = at;
 	}
 	
+	/**
+	 * sets facebook client
+	 * @throws Exception thrown in case accesstoken's not valid
+	 */
 	public void setClient() throws Exception  {
 		fbClient = new DefaultFacebookClient(accessToken);
 		myUser = fbClient.fetchObject("me", User.class);
