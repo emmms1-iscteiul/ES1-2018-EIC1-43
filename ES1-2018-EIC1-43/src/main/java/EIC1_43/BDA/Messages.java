@@ -10,7 +10,7 @@ package EIC1_43.BDA;
  *
  */
 
-public abstract class Message {
+public abstract class Messages {
 	
 	private String content;
 	
@@ -20,7 +20,7 @@ public abstract class Message {
 	 * @param content argumento que recebe uma string relativa ao conteudo da mensagem.
 	 */
 	
-	public Message (String content) {
+	public Messages (String content) {
 		
 		this.setContent(content);
 	}
@@ -38,5 +38,7 @@ public abstract class Message {
 	 */
 	
 	public abstract void tratarDataHora ();
+	
+	public abstract String toStringtxt();
 		
 }

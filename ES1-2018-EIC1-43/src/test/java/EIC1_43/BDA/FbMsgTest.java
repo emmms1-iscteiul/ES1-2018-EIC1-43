@@ -50,7 +50,7 @@ public class FbMsgTest {
 	@Test
 	public void objectRepTest() {
 		FacebookMessage fbmsg = new FacebookMessage(new Date(1995,29,20),"ola");
-		fbmsg.ObjectRepresention();
+		fbmsg.ObjectRepresentation();
 		
 	}
 }

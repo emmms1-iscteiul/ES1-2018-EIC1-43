@@ -1,10 +1,10 @@
 package EIC1_43.BDA;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Properties;
-
 import javax.mail.Folder;
 import javax.mail.Message;
-import javax.mail.NoSuchProviderException;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.Transport;
@@ -100,6 +100,15 @@ public class EmailSessionBean {
 			EmailMessage msg = new EmailMessage(m[i].getReceivedDate(),m[i].getContent().toString());
 			this.mails.add(msg);
 		}
+		
+		Collections.sort(mails, new Comparator<EmailMessage>() {
+
+			@Override
+			public int compare(EmailMessage arg0, EmailMessage arg1) {
+				return arg1.getDate().compareTo(arg0.getDate());
+			}
+			
+		});
 		
 		folder.close(false);
 		store.close();

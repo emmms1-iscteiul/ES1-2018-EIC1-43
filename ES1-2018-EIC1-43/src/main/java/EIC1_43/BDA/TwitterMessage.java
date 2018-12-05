@@ -1,6 +1,13 @@
 package EIC1_43.BDA;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import java.util.Date;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  * Classe que trata as mensagens recebidas do twitter como objectos.
@@ -11,11 +18,13 @@ import java.util.Date;
  *
  */
 
-public class TwitterMessage extends Message {
+public class TwitterMessage extends Messages {
 	
 	private Date date;
 	private String data;
 	private String hora;
+	private String title;
+	private JButton viewButton;
 	
 /**
  * Contrutor da classe. Instancias criadas com base num objecto do tipo Date e uma String.
@@ -27,6 +36,10 @@ public class TwitterMessage extends Message {
 		super(content);
 		this.date = date;
 		tratarDataHora();
+	}
+	
+	public void addListner (ActionListener listener) {
+		viewButton.addActionListener(listener);
 	}
 
 	public Date getDate () {
@@ -52,7 +65,7 @@ public class TwitterMessage extends Message {
 	
 	private String Title () {
 		
-		String title = "";
+		title = "";
 		for (int i = 0; i < 30; i++) {
 			if(i < super.getContent().length()) {
 				title = title + super.getContent().charAt(i);
@@ -107,10 +120,46 @@ public class TwitterMessage extends Message {
 	 * aparecer na lista de resultados da interface grafica com o utilizador.
 	 */
 	
-	public String ObjectRepresention () {
+	public String toStringTxt () {
 		
-		String object =  Title() + "               " + data + "   " + hora;
+		String object =  "twitter" + ";" + super.getContent() + ";" + data + ";" + hora;
 		return object;
+	}
+	
+	
+	public JPanel ObjectRepresentation () {
+		
+		JPanel panelMessage = new JPanel();
+		panelMessage.setPreferredSize(new Dimension(930, 60));
+		//panelMessage.setBounds(0, y, 930, 60);
+		panelMessage.setLayout(null);
+		
+		JLabel labelImage = new JLabel(new ImageIcon("images/twitter.png"));
+		labelImage.setBounds(5, 0, 60, 60);
+		JLabel labelOrigem = new JLabel("TWITTER");
+		labelOrigem.setBounds(75, 0, 100, 60);
+		JLabel labelTitle = new JLabel(Title());
+		labelTitle.setBounds(180, 0, 200, 60);
+		JLabel labelDate = new JLabel(data);
+		labelDate.setBounds(600, 0, 120, 60);
+		JLabel labelHora = new JLabel(hora);
+		labelHora.setBounds(750, 0, 70, 60);
+		
+		viewButton = new JButton("Ver");
+		viewButton.setBounds(850, 15, 70, 30);
+		
+		panelMessage.add(labelImage); panelMessage.add(labelOrigem);
+		panelMessage.add(labelTitle); panelMessage.add(labelDate);
+		panelMessage.add(labelHora); panelMessage.add(viewButton);
+		
+		panelMessage.setBackground(new Color(184,235,254));
+		
+		return panelMessage;
+	}
+
+	@Override
+	public String toStringtxt() {
+		return "twitter" + ";" + super.getContent() + ";" + data + ";" + hora;
 	}
 
 }

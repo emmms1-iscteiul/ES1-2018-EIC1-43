@@ -86,7 +86,7 @@ public class Twitter {
 
 			@Override
 			public int compare(TwitterMessage arg0, TwitterMessage arg1) {
-				return arg1.getData().compareTo(arg0.getData());
+				return arg1.getDate().compareTo(arg0.getDate());
 			}
 			
 		});
