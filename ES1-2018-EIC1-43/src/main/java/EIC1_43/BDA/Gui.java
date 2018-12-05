@@ -5,12 +5,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.DefaultListModel;
+
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -32,8 +32,8 @@ public class Gui {
 
 	private JTextArea txtBody;
 	private JTextArea txtSend;
-	private JList<String> list;
-	private DefaultListModel<String> model;
+	//private JList<String> list; //excluido
+	//private DefaultListModel<String> model; //excluido
 
 	private JButton disconnectButton;
 	private JButton facebookButton;
@@ -41,8 +41,11 @@ public class Gui {
 	private JButton emailButton;
 	private JButton refreshButton;
 
-	private JButton btnDisplay;
+	private JButton filtros;
 	private JButton btnPost;
+	
+	private JScrollPane scroll;
+	private JPanel resultsArea;
 
 	/**
 	 * 
@@ -130,7 +133,7 @@ public class Gui {
 
 		sendButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				app.sendValidation();
+				app.sendValidation(null);
 			}
 
 		});
@@ -146,23 +149,23 @@ public class Gui {
 	private void addResultsFrameContent() {
 
 		disconnectButton = new JButton("DISCONNECT  APP");
-		disconnectButton.setBounds(160, 25, 150, 50);
+		disconnectButton.setBounds(100, 25, 140, 50);
 		disconnectButton.setBackground(new Color(237,28,36));
 		refreshButton = new JButton(new ImageIcon("images/refresh.png"));
 		refreshButton.setBounds(20, 25, 50, 50);
 		twitterButton = new JButton("   TWITTER", new ImageIcon("images/twitterminiicon.png"));
 		twitterButton.setBackground(new Color(150,150,150));
-		twitterButton.setBounds(410, 25, 150, 50);
+		twitterButton.setBounds(460, 25, 150, 50);
 		facebookButton = new JButton("   FACEBOOK", new ImageIcon("images/faceminiicon.png"));
 		facebookButton.setBackground(new Color(150,150,150));
-		facebookButton.setBounds(590, 25, 150, 50);
+		facebookButton.setBounds(640, 25, 150, 50);
 		emailButton = new JButton("   E-MAIL", new ImageIcon("images/emailminiicon.png"));
 		emailButton.setBackground(new Color(150,150,150));
-		emailButton.setBounds(770, 25, 150, 50);
+		emailButton.setBounds(820, 25, 150, 50);
 
-		btnDisplay = new JButton("DISPLAY CONTENT");
-		btnDisplay.setBounds(200, 500, 200, 40);
-		btnDisplay.setBackground(new Color (151,210,125));
+		filtros = new JButton("Filtros");
+		filtros.setBounds(200, 500, 200, 40);
+		filtros.setBackground(new Color (151,210,125));
 
 		btnPost = new JButton("POST");
 		btnPost.setBounds(600, 500, 200, 40);
@@ -171,7 +174,7 @@ public class Gui {
 		resultsFrame.add(twitterButton);
 		resultsFrame.add(facebookButton);
 		resultsFrame.add(emailButton);
-		resultsFrame.add(btnDisplay);
+		resultsFrame.add(filtros);
 		resultsFrame.add(btnPost);
 		resultsFrame.add(refreshButton);
 		resultsFrame.add(disconnectButton);
@@ -181,13 +184,22 @@ public class Gui {
 		panel2.add(label1);
 		panel2.setBounds(5, 90, 80, 20);
 
+		/*
 		model = new DefaultListModel<String>();
 		list = new JList<String>(model);
 		list.setPreferredSize(new Dimension(980, 500));
 		list.setFont(new Font("Serif", Font.PLAIN, 25));
 		list.setBackground(new Color(240,248,255));
-		JScrollPane scroll = new JScrollPane(list);
+		*/                                                    //excluido
+		
+		resultsArea = new JPanel(); //adicionado
+	
+		//resultsArea.setLayout(new BoxLayout(resultsArea, BoxLayout.PAGE_AXIS));
+		resultsArea.setPreferredSize(new Dimension(930, 5000));
+		scroll = new JScrollPane(resultsArea); //modificado
 		scroll.setPreferredSize(new Dimension(965, 350));
+		
+		
 		JPanel panel3 = new JPanel();
 		panel3.add(scroll);
 		panel3.setBounds(10, 120, 965, 600);
@@ -195,22 +207,24 @@ public class Gui {
 		resultsFrame.add(panel2);
 		resultsFrame.add(panel3);
 
+		/*
 		btnDisplay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				app.displayContent();
+				app.displayContent(false);
 			}
 
 		});
+		*/                                                      // EXCLUIDO
 
 		facebookButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				app.facebookValidation();	
+				app.facebookValidation(null);	
 			}	
 		});
 
 		twitterButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				app.twitterValidation();
+				app.twitterValidation(null);
 			}
 		});
 
@@ -236,12 +250,12 @@ public class Gui {
 
 		this.emailButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				app.emailValidation();
+				app.emailValidation(null);
 			}
 
 		});
 	}
-
+	
 	public void open() {
 
 		resultsFrame.setVisible(true);
@@ -250,14 +264,24 @@ public class Gui {
 	public void setApp(App app) {
 		this.app = app;
 	}
-
-	public void clearList() {
-		model.removeAllElements();
+	
+	public void addMessage (JPanel mensage) {
+		resultsArea.add(mensage);
 	}
 
+	public void clearList() {
+		resultsArea.removeAll();
+	}
+	
+	public JPanel getResultsArea() {
+		return resultsArea;
+	}
+
+	/*
 	public DefaultListModel<String> getModelList() {
 		return this.model;
 	}
+	*/                                                        // EXCLUIDO
 
 	public JTextArea getTxtBody() {
 		return txtBody;
@@ -267,6 +291,7 @@ public class Gui {
 		this.txtBody = txtBody;
 	}
 
+	/*
 	public JList<String> getList() {
 		return list;
 	}
@@ -274,7 +299,8 @@ public class Gui {
 	public void setList(JList<String> list) {
 		this.list = list;
 	}
-
+    */                                                        //EXCLUIDO
+	
 	public App getApp() {
 		return app;
 	}
@@ -311,51 +337,9 @@ public class Gui {
 		this.sendFrame = sendFrame;
 	}
 
-	public JButton getFacebookButton() {
-		return facebookButton;
-	}
-
-	public void setFacebookButton(JButton facebookButton) {
-		this.facebookButton = facebookButton;
-	}
-
-	public JButton getTwitterButton() {
-		return twitterButton;
-	}
-
-	public void setTwitterButton(JButton twitterButton) {
-		this.twitterButton = twitterButton;
-	}
-
-	public JButton getEmailButton() {
-		return emailButton;
-	}
-
-	public void setEmailButton(JButton emailButton) {
-		this.emailButton = emailButton;
-	}
-
-	public JButton getBtnDisplay() {
-		return btnDisplay;
-	}
-
-	public void setBtnDisplay(JButton btnDisplay) {
-		this.btnDisplay = btnDisplay;
-	}
-
-	public JButton getBtnPost() {
-		return btnPost;
-	}
-
-	public void setBtnPost(JButton btnPost) {
-		this.btnPost = btnPost;
-	}
-
 	public JButton getDisconnectButton() {
 		return disconnectButton;
 	}
 
-	public void setDisconnectButton(JButton disconnectButton) {
-		this.disconnectButton = disconnectButton;
-	}
+	
 }

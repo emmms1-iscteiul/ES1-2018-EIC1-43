@@ -1,9 +1,10 @@
 package EIC1_43.BDA;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
+import java.util.List;
 import javax.swing.JOptionPane;
-
 import twitter4j.TwitterException;
 
 /**
@@ -20,6 +21,7 @@ public class App {
 	private Boolean facebookConnected = false;
 	private Boolean twitterConnected = false;
 	private Boolean emailConnected = false;
+	private List<Message> appMessages = new ArrayList<Message>(); // adicionado
 
 	/**
 	 * Default constructor
@@ -36,7 +38,7 @@ public class App {
 		this.internetConnected = true;
 		this.gui.setApp(this);
 	}
-
+	
 	public Gui getGui() {
 		return gui;
 	}
@@ -93,6 +95,14 @@ public class App {
 		this.emailConnected = emailConnected;
 	}
 
+	public EmailSessionBean getEmail() {
+		return email;
+	}
+
+	public void setEmail(EmailSessionBean email) {
+		this.email = email;
+	}
+
 	/**
 	 * Adds tweets into GUI
 	 */
@@ -101,11 +111,35 @@ public class App {
 		ArrayList<TwitterMessage> iscte = twitter.getIscteTweets();
 		ArrayList<TwitterMessage> me = twitter.getMeTweets();
 		for (TwitterMessage s : me) {
-			this.gui.getModelList().addElement("  me:  " + s.ObjectRepresention());
+			//this.gui.getModelList().addElement("  me:  " + s.ObjectRepresention()); EXCLUIDO
+			gui.addMessage(s.ObjectRepresentation());
+			
+			ActionListener action1 = new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					displayContent(s.getContent());
+				}
+			
+			};
+			
+			s.addListner(action1);
 		}
 		for (TwitterMessage s : iscte) {
-			this.gui.getModelList().addElement("ISCTE: " + s.ObjectRepresention());
+			//this.gui.getModelList().addElement("ISCTE: " + s.ObjectRepresention()); EXCLUIDO
+			gui.addMessage(s.ObjectRepresentation());
+			
+			ActionListener action2 = new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					displayContent(s.getContent());
+				}
+			
+			};
+			s.addListner(action2);
 		}
+		gui.getResultsArea().updateUI();
 	}
 
 	/**
@@ -114,15 +148,18 @@ public class App {
 	 * @param i
 	 * @return
 	 */
-
+/*
 	public String showTweetOnGui(int i) {
 		if (i < twitter.getMeTweets().size()) {
 			return twitter.getMeTweets().get(i).getContent();
 		} else {
-			return twitter.getIscteTweets().get(i - twitter.getMeTweets().size()).getContent();
+			if (twitter.getIscteTweets() != null && twitter.getIscteTweets().size() > 0) {
+				return twitter.getIscteTweets().get(i - twitter.getMeTweets().size()).getContent();
+			}
 		}
+		return "";
 	}
-
+*/                                                                   //EXCLUIDO
 	/**
 	 * 
 	 * Shows post on GUI
@@ -130,11 +167,15 @@ public class App {
 	 * @param s
 	 * @return
 	 */
-
+/*
 	public String showPostOnGui(int i) {
 		return facebook.getPosts().get(i).getContent();
 	}
-
+	
+	public String showEmailOnGui(int i) {
+		return email.getMails().get(i).getContent();
+	}
+*/                                                                   // EXCLUIDO
 	/**
 	 * Adds facebook posts into GUI
 	 * 
@@ -144,8 +185,39 @@ public class App {
 
 		ArrayList<FacebookMessage> a = facebook.getPosts();
 		for (FacebookMessage s : a) {
-			this.gui.getModelList().addElement("  me:  " + s.ObjectRepresention());
+			//this.gui.getModelList().addElement("  me:  " + s.ObjectRepresention());
+			gui.addMessage(s.ObjectRepresentation());
+			
+			ActionListener action = new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					displayContent(s.getContent());
+				}
+			
+			};
+			s.addListner(action);
 		}
+		gui.getResultsArea().updateUI();
+	}
+	
+	public void addEmailsIntoGui() {
+		ArrayList<EmailMessage> array = email.getMails();
+		for (EmailMessage msg : array) {
+			//this.gui.getModelList().addElement("  me:  " + msg.ObjectRepresention());
+			gui.addMessage(msg.ObjectRepresentation());
+			
+			ActionListener action = new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					displayContent(msg.getContent());
+				}
+			
+			};
+			msg.addListner(action);
+		}
+		gui.getResultsArea().updateUI();
 	}
 
 	/**
@@ -168,29 +240,49 @@ public class App {
 	/**
 	 * Displays posts or tweets content to user
 	 * 
+	 * @param isTest verifies if call comes from test
 	 */
 
-	public void displayContent() {
-		if (displayValidation()) {
-			if (this.twitterConnected && !this.facebookConnected) {
+	public void displayContent(String content /*boolean isTest*/) {
+		//if (displayValidation() || isTest) { if excluido
+			if (this.twitterConnected && !this.facebookConnected && !emailConnected) {
 				this.gui.resultsFrameContent();
-				this.gui.getTxtBody().setText(showTweetOnGui(this.gui.getList().getSelectedIndex()));
-			} else if (this.facebookConnected && !this.twitterConnected) {
+				//if (!isTest) {
+					this.gui.getTxtBody().setText(content);
+				//}
+			} else if (this.facebookConnected && !this.twitterConnected && !emailConnected ) {
 				this.gui.resultsFrameContent();
-				this.gui.getTxtBody().setText(showPostOnGui(this.gui.getList().getSelectedIndex()));
+				//if (isTest) {
+					this.gui.getTxtBody().setText(content);
+				//} else {
+					//this.gui.getTxtBody().setText(showPostOnGui(this.gui.getList().getSelectedIndex()));
+				//}
+
+			} else if(this.emailConnected && !this.facebookConnected && !this.twitterConnected) {
+				this.gui.resultsFrameContent();
+				this.gui.getTxtBody().setText(content);
 			}
-		}
+		//}
 
 	}
 
+	/**
+	 * makes display validation
+	 * 
+	 * @return boolean if it's ok to display
+	 */
+	/*
 	public boolean displayValidation() {
 		return this.gui.getList() != null && !this.gui.getList().isSelectionEmpty();
 	}
-
+*/                                                                                      // EXCLUIDO
 	/**
 	 * 
 	 * Connects app to facebook
 	 * 
+	 * @param accessToken token needed to connect to facebook
+	 * 
+	 * @throws Exception
 	 */
 
 	public void connectFacebook(String accessToken) throws Exception {
@@ -199,6 +291,7 @@ public class App {
 		this.facebook.setClient();
 		this.facebook.updatePosts();
 		this.gui.clearList();
+		gui.getResultsArea().updateUI();// adicionado
 		addPostsIntoGui();
 		this.twitterConnected = false;
 		this.facebookConnected = true;
@@ -217,6 +310,7 @@ public class App {
 		this.twitter.setInfo(info);
 		if (internetConnected) {
 			this.gui.clearList();
+			gui.getResultsArea().updateUI();//adicionado
 			this.twitter.updateTwitter();
 			addTweetsIntoGui();
 			this.facebookConnected = false;
@@ -231,6 +325,9 @@ public class App {
 	 * 
 	 * publish the post or tweet content
 	 * 
+	 * @param destino post destination
+	 * @param assunto post matter
+	 * 
 	 * @throws TwitterException
 	 * 
 	 */
@@ -241,6 +338,7 @@ public class App {
 			this.twitter.sendTweet(this.gui.getTxtSend().getText());
 			this.twitter.updateTwitter();
 			this.gui.clearList();
+			gui.getResultsArea().updateUI();//adicionado
 			this.gui.getTxtSend().setText("");
 			addTweetsIntoGui();
 			this.facebookConnected = false;
@@ -251,39 +349,81 @@ public class App {
 		} else if (this.emailConnected && !this.facebookConnected && !this.twitterConnected && this.internetConnected) {
 			this.email.sendEmail(destino, assunto, this.gui.getTxtSend().getText());
 			this.gui.clearList();
+			gui.getResultsArea().updateUI();//adicionado
 			this.gui.getTxtSend().setText("");
 		} else {
 			JOptionPane.showMessageDialog(null, "Sem Internet" + "\n" + "Funcionalidade indisponivel", "",
 					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
+	
+	/**
+	 * 
+	 * disconnects app from service
+	 */
 
 	public void disconnect() {
 		this.gui.clearList();
-		JOptionPane.showMessageDialog(null, "Fim da ligação ao serviço com sucesso.", "",
-				JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Fim da ligação ao serviço.", "", JOptionPane.INFORMATION_MESSAGE);
 	}
+	
+	/**
+	 * connects app to email
+	 * 
+	 * @param username name of email user
+	 * @param password email user application's password
+	 * @throws Exception request is not getting served
+	 *  
+	 */
 
 	public void connectEmail(String username, String password) throws Exception {
 		verifyInternetConnection();
 		email = new EmailSessionBean(username, password);
+		this.email.updateEmail();
 		this.emailConnected = true;
+		this.gui.clearList();//adicionado
+		gui.getResultsArea().updateUI();//adicionado
+		addEmailsIntoGui();
+		this.facebookConnected = false;
+		this.twitterConnected = false;
 	}
 
-	public void facebookValidation() {
+	/**
+	 * sets application disconnected
+	 */
+	public void setDc() {
+		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
+			this.facebookConnected = false;
+			this.twitterConnected = false;
+			this.emailConnected = false;
+			disconnect();
+		}
+	}
+
+	/**
+	 * checks facebook connection
+	 * 
+	 * @param test verifies if call comes from test
+	 */
+	public void facebookValidation(String test) {
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
 			JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
 					JOptionPane.INFORMATION_MESSAGE);
 		} else {
 			boolean isValid = true;
 			String accessToken = "";
-			String escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
-			if (escolha != null && (escolha.equals("s") || escolha.equals("S"))) {
+			String escolha = "";
+			if (test == null) {
+				escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
+			}
+			test = "";
+			if ((escolha != null && (escolha.equals("s") || escolha.equals("S")))
+					|| (test != null && test.equals("s"))) {
 				accessToken = "EAADfa40pTAwBAHVrPBdHGgr9JeN9XFqQVXvfcop6PUxl4Oa9nsDFD3A8lgW0sesvZAWDZBZCSj5sp0uhTiIQDFhWz"
 						+ "3sB4sFfCVA6bcLJrZCk6ZAUFxNBtqnrUvosZAOuKTNCdZB9El8tubEPbJJ9RaKpIQuW3c0JIEwpvnSMdzwVwZDZD";
 			} else if (escolha != null && (escolha.equals("n") || escolha.equals("N"))) {
 				accessToken = JOptionPane.showInputDialog("Introduza o access Token");
-			} else if (escolha != null) {
+			} else if (escolha != null || test.equals("lol")) {
 				JOptionPane.showMessageDialog(null, "Resposta Invalida", "", JOptionPane.INFORMATION_MESSAGE);
 				isValid = false;
 			} else {
@@ -303,7 +443,12 @@ public class App {
 		}
 	}
 
-	public void emailValidation() {
+	/**
+	 * checks email connection 
+	 * 
+	 * @param test checks if call comes from test
+	 */
+	public void emailValidation(String test) {
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
 			JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
 					JOptionPane.INFORMATION_MESSAGE);
@@ -311,14 +456,17 @@ public class App {
 			boolean isValid = true;
 			String username = "";
 			String password = "";
-			String escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
-			if (escolha != null && (escolha.equals("s") || escolha.equals("S"))) {
+			String escolha = "";
+			if (test == null) {
+				escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
+			}
+			if ((escolha != null && (escolha.equals("s") || escolha.equals("S"))) || test != null && test.equals("s")) {
 				username = "ola123ola123ola123software@gmail.com";
 				password = "modfzrjlqjmkruhp";
 			} else if (escolha != null && (escolha.equals("n") || escolha.equals("N"))) {
 				username = JOptionPane.showInputDialog("Introduza o email");
 				password = JOptionPane.showInputDialog("Introduza a password da aplicacao");
-			} else if (escolha != null) {
+			} else if (escolha != null || (test != null && test.equals("ola"))) {
 				JOptionPane.showMessageDialog(null, "Resposta Invalida", "", JOptionPane.INFORMATION_MESSAGE);
 				isValid = false;
 			} else {
@@ -336,6 +484,11 @@ public class App {
 			}
 		}
 	}
+	
+	/**
+	 * checks if post is valid
+	 * 
+	 */
 
 	public void postValidation() {
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
@@ -348,10 +501,26 @@ public class App {
 
 	}
 
-	public void sendValidation() {
+	/**
+	 * checks if send request is valid
+	 * 
+	 * @param test checks if call comes from test scenario
+	 */
+	public void sendValidation(String test) {
+		String destino = "";
+		String assunto = "";
 		if (this.emailConnected) {
-			String destino = JOptionPane.showInputDialog("Introduza o email destino");
-			String assunto = JOptionPane.showInputDialog("Introduza o assunto do email");
+			if (test == null) {
+				destino = JOptionPane.showInputDialog("Introduza o email destino");
+				assunto = JOptionPane.showInputDialog("Introduza o assunto do email");
+			}
+			if (test != null && test.equals("mail")) {
+				destino = "ola123ola123ola123software@gmail.com";
+				assunto = "ola amigo";
+			} else if (test != null && test.equals("mailFail")) {
+				destino = "vai falhar";
+				assunto = "adeus amigo";
+			}
 			try {
 				post(destino, assunto);
 				JOptionPane.showMessageDialog(null, "Email enviado com sucesso!", "", JOptionPane.INFORMATION_MESSAGE);
@@ -367,24 +536,24 @@ public class App {
 			}
 		}
 	}
-
-	public void setDc() {
-		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
-			this.facebookConnected = false;
-			this.twitterConnected = false;
-			this.emailConnected = false;
-			disconnect();
-		}
-	}
-
-	public void twitterValidation() {
+	
+	/**
+	 * checks twitter validation
+	 * 
+	 * @param test checks if call comes from test
+	 */
+	public void twitterValidation(String test) {
+		ArrayList<String> info = new ArrayList<String>();
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
 			JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
 					JOptionPane.INFORMATION_MESSAGE);
 		} else {
-			ArrayList<String> info = new ArrayList<String>();
-			String escolha = JOptionPane.showInputDialog("Pretende aceder ao Twitter como default user? [s/n]");
-			if (escolha != null && (escolha.equals("s") || escolha.equals("S"))) {
+			String escolha = "";
+			if (test == null) {
+				escolha = JOptionPane.showInputDialog("Pretende aceder ao Twitter como default user? [s/n]");
+			}
+			if ((escolha != null && (escolha.equals("s") || escolha.equals("S")))
+					|| (test != null && test.equals("s"))) {
 				info.add("bPcMjzld5PjWFDYMl401Ak0kw");
 				info.add(1, "V6gRA7z4HTpaiuNaoIYZ6wDxFkaEEr4jZRLOOWYOe8fdHP9Ita");
 				info.add(2, "1050480069683150848-Fjr0lz1c6jnRMCzg5VMr2xlhBD0hju");
@@ -394,10 +563,18 @@ public class App {
 				info.add(1, JOptionPane.showInputDialog("Introduza AuthConsumerSecret"));
 				info.add(2, JOptionPane.showInputDialog("Introduza AuthAccessToken"));
 				info.add(3, JOptionPane.showInputDialog("Introduza AuthAccessTokenSecret"));
-			} else if (escolha != null) {
+			} else if (escolha != null || (test != null && test.equals("ola"))) {
 				JOptionPane.showMessageDialog(null, "Resposta Invalida", "", JOptionPane.INFORMATION_MESSAGE);
 			}
+
 			try {
+				if (test != null && !test.equals("s")) {
+					info.add("Penso");
+					info.add(1, "que");
+					info.add(2, "isto");
+					info.add(3, "falha");
+					connectTwitter(info);
+				}
 				if (info.size() != 0) {
 					connectTwitter(info);
 					this.gui.getResultsFrame().add(this.gui.getDisconnectButton());
