@@ -93,6 +93,14 @@ public class Gui {
 
 	}
 	
+	/**
+	 * 
+	 * Metodo que desenha a janela de filtros onde posteriormente o utilizador podera selecionar/formar
+	 * uma data cujo botão Aplicar Filtro irá utilizar para filtrar apenas as mensagens correspondentes 
+	 * a data pretendida
+	 * 
+	 */
+	
 	public void filtrosFrameContent() {
 
 		filtrosFrame = new JFrame("FILTRAR  MENSAGENS");
@@ -209,9 +217,7 @@ public class Gui {
 			public void actionPerformed(ActionEvent e) {
 				app.sendValidation(null);
 			}
-
 		});
-
 	}
 
 	/**
@@ -324,75 +330,89 @@ public class Gui {
 
 		});
 	}
+	/**
+	 * Torna visivel a janela principal da aplicacao 
+	 */
 	
 	public void open() {
 
 		resultsFrame.setVisible(true);
 	}
+	
+	/**
+	 * Torna a app visível para a classe gui
+	 * 
+	 * @param app atribui uma classe app à GUI 
+	 */
 
 	public void setApp(App app) {
 		this.app = app;
 	}
 	
+	/**
+	 * Adiciona ao painel resultsArea uma nova mensagem para ser visível para o utilizador
+	 * 
+	 * @param mensage  mensagem nova ser adicionada
+	 */
+	
 	public void addMessage (JPanel mensage) {
 		resultsArea.add(mensage);
 	}
+	
+	/**
+	 * Limpa todas as mensagens no painel resultsArea
+	 */
 
 	public void clearList() {
 		resultsArea.removeAll();
 	}
 	
+	/**
+	 * 
+	 * @return devolve o painel resultsArea
+	 */
+	
 	public JPanel getResultsArea() {
 		return resultsArea;
 	}
-
+	
+	/**
+	 * 
+	 * @return devolve o conteudo (string) contida na JTextArea txtBody 
+	 */
+	
 	public JTextArea getTxtBody() {
 		return txtBody;
 	}
 
-	public void setTxtBody(JTextArea txtBody) {
-		this.txtBody = txtBody;
-	}
-
-	public App getApp() {
-		return app;
-	}
-
+	/**
+	 * 
+	 * @return obtem a mensagem inserida pelo utilizador para enviar a uma das aplicacoes
+	 */
+	
+	
 	public JTextArea getTxtSend() {
 		return txtSend;
 	}
 
-	public void setTxtSend(JTextArea txtSend) {
-		this.txtSend = txtSend;
-	}
-
+	/**
+	 * 
+	 * @return devolve a JFrame (resultsFrame) que permite o utilizador visualizar o
+	 * conteudo completo de uma mensagem especifica. 
+	 */
+	
 	public JFrame getResultsFrame() {
 		return resultsFrame;
 	}
-
-	public void setResultsFrame(JFrame resultsFrame) {
-		this.resultsFrame = resultsFrame;
-	}
-
-	public JFrame getSelectedFrame() {
-		return selectedFrame;
-	}
-
-	public void setSelectedFrame(JFrame selectedFrame) {
-		this.selectedFrame = selectedFrame;
-	}
-
-	public JFrame getSendFrame() {
-		return sendFrame;
-	}
-
-	public void setSendFrame(JFrame sendFrame) {
-		this.sendFrame = sendFrame;
-	}
-
+	
+	/**
+	 * Torna possivel a class app aceder e controlar o botao disconnectButton
+	 * 
+	 * @return devolve o botao disconnectedButton
+	 */
+	
 	public JButton getDisconnectButton() {
 		return disconnectButton;
 	}
 
-	
 }

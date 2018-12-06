@@ -2,7 +2,6 @@ package EIC1_43.BDA;
 
 import static org.junit.jupiter.api.Assertions.*;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JTextArea;
 import org.junit.Test;
 
@@ -30,33 +29,12 @@ public class GuiTest {
 	@Test
 	public void setAndGetersTest() {
 		gui = new Gui();
-		Facebook facebook = new Facebook();
-		Twitter twitter = new Twitter();
-		App app = new App(gui, facebook, twitter);
-		JFrame frame = new JFrame();
-		JTextArea textArea = new JTextArea();
-		JList<String> jList = new JList<String>();
 		
-		gui.setSelectedFrame(frame);
-		assertTrue(gui.getSelectedFrame().equals(frame));
+		assertTrue(gui.getResultsFrame().equals(null));
 		
-		gui.setResultsFrame(frame);
-		assertTrue(gui.getResultsFrame().equals(frame));
+		assertTrue(gui.getTxtBody().equals(null));
 		
-		gui.setSendFrame(frame);
-		assertTrue(gui.getSendFrame().equals(frame));
-		
-		gui.setTxtBody(textArea);
-		assertTrue(gui.getTxtBody().equals(textArea));
-		
-		//gui.setList(jList);
-		//assertTrue(gui.getList().equals(jList));
-		
-		gui.setApp(app);
-		assertTrue(gui.getApp().equals(app));
-		
-		gui.setTxtSend(textArea);
-		assertTrue(gui.getTxtSend().equals(textArea));
+		assertTrue(gui.getTxtSend().equals(null));
 		
 	}
 	
@@ -65,7 +43,6 @@ public class GuiTest {
 		
 		gui = new Gui();
 		gui.clearList();
-		//assertTrue(gui.getModelList().size() == 0);
 		
 	}
 	
