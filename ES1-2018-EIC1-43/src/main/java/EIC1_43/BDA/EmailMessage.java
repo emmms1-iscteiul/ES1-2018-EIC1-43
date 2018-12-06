@@ -9,62 +9,99 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
-public class EmailMessage extends Message{
+public class EmailMessage extends Messages {
 
 	private Date date;
 	private String data;
 	private String hora;
 	private String title;
 	private JButton viewButton;
+
+	/**
+	 * Class constructor
+	 * @param date data
+	 * @param content conteúdo
+	 */
 	
 	public EmailMessage(Date date, String content) {
 		super(content);
 		this.date = date;
 		tratarDataHora();
 	}
+
+	/**
+	 * Adds listener 
+	 * @param listener
+	 */
 	
-	public void addListner (ActionListener listener) {
+	public void addListner(ActionListener listener) {
 		viewButton.addActionListener(listener);
 	}
+
+	/**
+	 * Returns object Date
+	 */
 	
-	public Date getDate () {
+	@Override
+	public Date getDate() {
 		return date;
 	}
 
+	/**
+	 * Returns date
+	 * @return
+	 */
+	
 	public String getData() {
 		return data;
 	}
+	
+	/**
+	 * Returns hour
+	 * @return
+	 */
 
 	public String getHora() {
 		return hora;
 	}
+
+	/**
+	 * Returns title
+	 * @return
+	 */
 	
-	private String Title () {
-		
+	private String Title() {
+
 		title = "";
 		for (int i = 0; i < 30; i++) {
-			if(i<super.getContent().length()) {
+			if (i < super.getContent().length()) {
 				title = title + super.getContent().charAt(i);
 			} else {
 				break;
 			}
 		}
-		
+
 		return title;
 	}
+
+	/**
+	 * Covers the hour and date of the e-mail
+	 */
 	
 	@Override
 	public void tratarDataHora() {
-		
+
 		String dateDate = date.toString();
-		String week = ""; String mes = ""; String day = ""; String year = "";
+		String week = "";
+		String mes = "";
+		String day = "";
+		String year = "";
 		String time = "";
-		
+
 		for (int i = 0; i != dateDate.length(); i++) {
 			if (i < 3) {
 				week = week + dateDate.charAt(i);
-			} 
+			}
 			if (i > 3 && i < 7) {
 				mes = mes + dateDate.charAt(i);
 			}
@@ -78,24 +115,38 @@ public class EmailMessage extends Message{
 				year = year + dateDate.charAt(i);
 			}
 		}
-		
+
 		data = week + " " + day + " " + mes + " " + year;
 		hora = time;
 	}
+
+	/**
+	 * Returns the object information in a string
+	 */
 	
-	public String toStringTxt () {
+	@Override
+	public String toStringTxt() {
+
+		String content = super.getContent();
+		content = content.replace("\n","").replace("\r","");
 		
-		String object =  "twitter" + ";" + super.getContent() + ";" + data + ";" + hora;
+		title = title.replace("\n","").replace("\r","");
+		
+		String object = "email" + ";" + title + ";" + content + ";" + data + ";" + hora;
 		return object;
 	}
+
+	/**
+	 * Shows the information in the panel
+	 * @return
+	 */
 	
-	
-	public JPanel ObjectRepresentation () {
-		
+	public JPanel ObjectRepresentation() {
+
 		JPanel panelMessage = new JPanel();
 		panelMessage.setPreferredSize(new Dimension(930, 60));
 		panelMessage.setLayout(null);
-		
+
 		JLabel labelImage = new JLabel(new ImageIcon("images/email.png"));
 		labelImage.setBounds(5, 0, 60, 60);
 		JLabel labelOrigem = new JLabel("EMAIL");
@@ -106,17 +157,20 @@ public class EmailMessage extends Message{
 		labelDate.setBounds(600, 0, 120, 60);
 		JLabel labelHora = new JLabel(hora);
 		labelHora.setBounds(750, 0, 70, 60);
-		
+
 		viewButton = new JButton("Ver");
 		viewButton.setBounds(850, 15, 70, 30);
-		
-		panelMessage.add(labelImage); panelMessage.add(labelOrigem);
-		panelMessage.add(labelTitle); panelMessage.add(labelDate);
-		panelMessage.add(labelHora); panelMessage.add(viewButton);
-		
-		panelMessage.setBackground(new Color(250,171,171));
-		
+
+		panelMessage.add(labelImage);
+		panelMessage.add(labelOrigem);
+		panelMessage.add(labelTitle);
+		panelMessage.add(labelDate);
+		panelMessage.add(labelHora);
+		panelMessage.add(viewButton);
+
+		panelMessage.setBackground(new Color(250, 171, 171));
+
 		return panelMessage;
 	}
-	
+
 }

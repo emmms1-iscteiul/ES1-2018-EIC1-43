@@ -75,6 +75,11 @@ public class EmailSessionBean {
 			transport.sendMessage(mailMessage, mailMessage.getAllRecipients());
 	}
 	
+	/**
+	 * Updates e-mail session
+	 * @throws Exception
+	 */
+	
 	public void updateEmail() throws Exception {
 		URLName url;
 		url = new URLName("imaps", "imap.gmail.com", 993, "INBOX", this.email, password);
@@ -116,51 +121,103 @@ public class EmailSessionBean {
 		session = null;
 	}
 
-	
+	/**
+	 * Returns the list of emails
+	 * @return
+	 */
 	
 	public ArrayList<EmailMessage> getMails() {
 		return mails;
 	}
 
+	/**
+	 * Returns email
+	 * @return
+	 */
+	
 	public String getEmail() {
 		return email;
 	}
 
+	/**
+	 * Sets email
+	 * @param email
+	 */
+	
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
+	/**
+	 * Returns password
+	 * @return
+	 */
+	
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * Sets password
+	 * @param password
+	 */
+	
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
+	/**
+	 * Returns properties
+	 * @return
+	 */
+	
 	public Properties getProps() {
 		return props;
 	}
 
+	/**
+	 * Sets properties
+	 * @param props
+	 */
+	
 	public void setProps(Properties props) {
 		this.props = props;
 	}
 
+	/**
+	 * Returns session
+	 * @return
+	 */
+	
 	public Session getSession() {
 		return session;
 	}
 
+	/**
+	 * Sets session
+	 * @param session
+	 */
+	
 	public void setSession(Session session) {
 		this.session = session;
 	}
 
+	/**
+	 * Returns transport
+	 * @return
+	 */
+	
 	public Transport getTransport() {
 		return transport;
 	}
 
+	/**
+	 * Sets transport
+	 * @param transport
+	 */
+	
 	public void setTransport(Transport transport) {
 		this.transport = transport;
 	}
-	
-	
+		
 }

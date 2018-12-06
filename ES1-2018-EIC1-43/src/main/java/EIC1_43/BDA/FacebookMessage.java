@@ -18,7 +18,7 @@ import javax.swing.JPanel;
  *
  */
 
-public class FacebookMessage extends Message {
+public class FacebookMessage extends Messages {
 
 	private Date date;
 	private String data;
@@ -39,36 +39,74 @@ public class FacebookMessage extends Message {
 		tratarDataHora();
 	}
 	
+	/**
+	 * Adds action listener to the button
+	 * @param listener
+	 */
+	
 	public void addListner (ActionListener listener) {
 		viewButton.addActionListener(listener);
 	}
 	
+	/**
+	 * Return object date
+	 */
+	
+	@Override
 	public Date getDate() {
 		return date;
 	}
 
+	/**
+	 * Return date
+	 * @return
+	 */
+	
 	public String getData() {
 		return data;
 	}
 
+	/**
+	 * Return hour
+	 * @return
+	 */
+	
 	public String getHora() {
 		return hora;
 	}
 	
-	
+	/**
+	 * Sets date
+	 * @param data
+	 */
 	
 	public void setData(String data) {
 		this.data = data;
 	}
 
+	/**
+	 * Sets hour
+	 * @param hora
+	 */
+	
 	public void setHora(String hora) {
 		this.hora = hora;
 	}
 
+	/**
+	 * Returns title
+	 * @return
+	 */
+	
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * Sets title
+	 * @param title
+	 */
+	
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -141,12 +179,17 @@ public class FacebookMessage extends Message {
 	 * aparecer na lista de resultados da interface grafica com o utilizador.
 	 */
 	
-public String toStringTxt () {
+	@Override
+	public String toStringTxt () {
 		
-		String object =  "facebook" + "," + super.getContent() + ";" + data + ";" + hora;
+		String object =  "facebook" + ";" + title + ";" + super.getContent() + ";" + data + ";" + hora;
 		return object;
 	}
 
+	/**
+	 * Represents the object in the panel
+	 * @return
+	 */
 	
 	public JPanel ObjectRepresentation () {
 		
@@ -176,4 +219,5 @@ public String toStringTxt () {
 		
 		return panelMessage;
 	}
+
 }

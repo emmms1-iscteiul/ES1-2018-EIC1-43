@@ -18,7 +18,7 @@ import javax.swing.JPanel;
  *
  */
 
-public class TwitterMessage extends Message {
+public class TwitterMessage extends Messages {
 	
 	private Date date;
 	private String data;
@@ -42,6 +42,7 @@ public class TwitterMessage extends Message {
 		viewButton.addActionListener(listener);
 	}
 
+	@Override
 	public Date getDate () {
 		return date;
 	}
@@ -70,7 +71,7 @@ public class TwitterMessage extends Message {
 			if(i < super.getContent().length()) {
 				title = title + super.getContent().charAt(i);
 			} else {
-				title = title + " ";
+				break;
 			}
 		}
 		
@@ -120,9 +121,10 @@ public class TwitterMessage extends Message {
 	 * aparecer na lista de resultados da interface grafica com o utilizador.
 	 */
 	
+	@Override
 	public String toStringTxt () {
 		
-		String object =  "twitter" + ";" + super.getContent() + ";" + data + ";" + hora;
+		String object =  "twitter" + ";" + title + ";" + super.getContent() + ";" + data + ";" + hora;
 		return object;
 	}
 	
@@ -131,7 +133,6 @@ public class TwitterMessage extends Message {
 		
 		JPanel panelMessage = new JPanel();
 		panelMessage.setPreferredSize(new Dimension(930, 60));
-		//panelMessage.setBounds(0, y, 930, 60);
 		panelMessage.setLayout(null);
 		
 		JLabel labelImage = new JLabel(new ImageIcon("images/twitter.png"));
@@ -156,5 +157,4 @@ public class TwitterMessage extends Message {
 		
 		return panelMessage;
 	}
-
 }

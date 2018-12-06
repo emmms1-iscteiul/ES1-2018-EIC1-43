@@ -1,4 +1,5 @@
 package EIC1_43.BDA;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -23,28 +24,23 @@ public class Facebook {
 	private ArrayList<FacebookMessage> posts = new ArrayList<FacebookMessage>();
 	
 	
-// Post: opcao indisponivel 
-	
-//	public void post(String post) {
-//		fbClient.publish( "me/feed", FacebookType.class, Parameter.with("message", post));
-//	}
-	
 	/**
 	 * updates posts
 	 * 
 	 * @throws Exception thrown in case it's not possible to update posts
 	 */
+	
 	public void updatePosts() throws Exception {
 		Connection<Post> result = fbClient.fetchConnection("me/feed", Post.class);
 		List<Post> newsfeed = result.getData();
 		for (Post aFeed : newsfeed) {
 			if (aFeed.getMessage() != null) {
-				// Cria e adiciona à lista posts, objectos do tipo FacebookMessage para todos os resultados obtidos do facebook
+				
 				FacebookMessage facebookMessage = new FacebookMessage(aFeed.getCreatedTime(), aFeed.getMessage()); 
 				posts.add(facebookMessage);
 			}
 		}
-		// Compara os objectos FacebookMessage por data e ordena os resultados do mais recente para o mais antigo
+		
 		Collections.sort(posts, new Comparator<FacebookMessage>() {
 
 			@Override
