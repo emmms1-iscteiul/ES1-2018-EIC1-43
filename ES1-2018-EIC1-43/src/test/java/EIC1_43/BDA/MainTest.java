@@ -1,18 +1,12 @@
 package EIC1_43.BDA;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.Test;
 
-import org.junit.jupiter.api.Test;
-
-class MainTest 
-{
-
-	Main main;
+public class MainTest {
+	
 	@Test
-	void test() 
-	{
-		main = new Main();
-		Main.main(null);
+	public void mainTest() {
+		new Main().main(null);
 	}
 
 }

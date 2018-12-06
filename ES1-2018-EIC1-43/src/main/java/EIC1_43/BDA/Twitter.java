@@ -76,21 +76,21 @@ public class Twitter {
 
 		for (Status status : statuses) {
 			if (status.getUser().getName() != null && status.getUser().getName().contains("ISCTE")) {
-				// Cria e adiciona à lista iscte Tweets objectos do tipo TwitterMessage para todos os resultados obtidos do twitter
+				
 				TwitterMessage twitterMessage = new TwitterMessage (status.getCreatedAt(), status.getText());
 				iscteTweets.add(twitterMessage);
 			}
 		}
-		// Compara os objectos TwitterMessage por data e ordena os resultados do mais antigo para o mais recente
+		
 		Collections.sort(iscteTweets, new Comparator<TwitterMessage>() {
 
 			@Override
 			public int compare(TwitterMessage arg0, TwitterMessage arg1) {
-				return arg1.getData().compareTo(arg0.getData());
+				return arg1.getDate().compareTo(arg0.getDate());
 			}
 			
 		});
-		// Inverte a lista iscteTweets por forma a que as mensagens apareçam na interface da mais recente para a mais antiga.
+		
 		Collections.reverse(iscteTweets);
 
 		for (Status status : statuses) {
@@ -130,7 +130,6 @@ public class Twitter {
 	}
 	
 	
-
 	public ConfigurationBuilder getCb() {
 		return cb;
 	}
@@ -147,6 +146,13 @@ public class Twitter {
 		this.tf = tf;
 	}
 
+	
+	/**
+	 * sets twitter info
+	 * 
+	 * @param info information necessary to feed configuration builder
+	 * @throws TwitterException thrown in case info's not valid 
+	 */
 	public void setInfo(ArrayList<String> info) throws TwitterException {
 		cb = new ConfigurationBuilder();
 		cb.setOAuthConsumerKey(info.get(0));

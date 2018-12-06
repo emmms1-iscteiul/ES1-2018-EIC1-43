@@ -1,0 +1,70 @@
+twitter;iscte iscte iscte iscte iscte;iscte iscte iscte iscte iscte;Wed 05 Dec 2018;22:04
+twitter;bonito;bonito;Wed 05 Dec 2018;19:00
+twitter;adeus goncalo;adeus goncalo;Wed 05 Dec 2018;18:58
+twitter;skjfbsdbf sdkfbdsjfkjdsbfkj dh;skjfbsdbf sdkfbdsjfkjdsbfkj dhfkdshfkhsd dkfhksdhfkdh kashdfkdshfkh kdhfkudsgfk kdshfksdfk;Wed 05 Dec 2018;18:40
+twitter;djdjfbjdbfcdkjbfkljsdbgkbfdklb;djdjfbjdbfcdkjbfkljsdbgkbfdklbgkljgkbfdklhgkljbgklfdlhbghfdgiohfdiogoifdnhgodnfkjgnfdkljnkfdnlhgkfhgljklçlj;Wed 05 Dec 2018;18:25
+twitter;ola;ola;Wed 05 Dec 2018;17:32
+email;ola isto � so um test aten�ao.;ola isto � so um test aten�ao.;Wed 05 Dec 2018;17:30
+twitter;No post de teste twitter;No post de teste twitter;Tue 04 Dec 2018;19:49
+twitter;Teste nova interface gráfica.;Teste nova interface gráfica.;Tue 04 Dec 2018;19:48
+email;javax.mail.internet.MimeMultip;javax.mail.internet.MimeMultipart@49f05cdf;Tue 04 Dec 2018;17:20
+email;javax.mail.internet.MimeMultip;javax.mail.internet.MimeMultipart@2ac0aa22;Tue 04 Dec 2018;03:03
+email;javax.mail.internet.MimeMultip;javax.mail.internet.MimeMultipart@23d7bb0f;Mon 03 Dec 2018;12:07
+email;javax.mail.internet.MimeMultip;javax.mail.internet.MimeMultipart@29978d4c;Fri 30 Nov 2018;16:26
+twitter;I added a video to a @YouTube ;I added a video to a @YouTube playlist https://t.co/VTnYO7nJ87 Livro do Mês dezembro 2018 Biblioteca ISCTE-IUL;Fri 30 Nov 2018;14:17
+email;javax.mail.internet.MimeMultip;javax.mail.internet.MimeMultipart@7b931815;Fri 30 Nov 2018;08:32
+email;javax.mail.internet.MimeMultip;javax.mail.internet.MimeMultipart@ac06bdc;Tue 27 Nov 2018;19:00
+email;javax.mail.internet.MimeMultip;javax.mail.internet.MimeMultipart@1b823908;Tue 27 Nov 2018;03:04
+twitter;0.6436865040286511;0.6436865040286511;Mon 26 Nov 2018;18:31
+email;0.682316273934537;0.682316273934537;Mon 26 Nov 2018;18:31
+twitter;0.5152672637013171;0.5152672637013171;Mon 26 Nov 2018;18:31
+email;javax.mail.internet.MimeMultip;javax.mail.internet.MimeMultipart@7df5e477;Mon 26 Nov 2018;06:01
+twitter;0.19094041787000005;0.19094041787000005;Sun 25 Nov 2018;14:57
+email;0.5662457672890151;0.5662457672890151;Sun 25 Nov 2018;14:57
+twitter;0.9317403599030158;0.9317403599030158;Sun 25 Nov 2018;14:57
+twitter;0.9294839992580582;0.9294839992580582;Sun 25 Nov 2018;14:47
+email;0.9830092062745176;0.9830092062745176;Sun 25 Nov 2018;14:46
+twitter;0.5355199776333226;0.5355199776333226;Sun 25 Nov 2018;14:46
+twitter;0.1201559176389958;0.1201559176389958;Sun 25 Nov 2018;13:52
+email;0.8606833167624526;0.8606833167624526;Sun 25 Nov 2018;13:52
+twitter;0.19632133927361295;0.19632133927361295;Sun 25 Nov 2018;13:52
+twitter;0.2552082015209738;0.2552082015209738;Sun 25 Nov 2018;13:41
+email;0.6580009534649803;0.6580009534649803;Sun 25 Nov 2018;13:41
+twitter;0.5120781420588378;0.5120781420588378;Sun 25 Nov 2018;13:41
+email;0.5590737757464016;0.5590737757464016;Sun 25 Nov 2018;13:30
+twitter;0.8523391001267812;0.8523391001267812;Sun 25 Nov 2018;13:30
+email;0.10799991626408845;0.10799991626408845;Sun 25 Nov 2018;13:26
+email;0.28264078433447126;0.28264078433447126;Sun 25 Nov 2018;13:20
+email;0.8145996589445004;0.8145996589445004;Sun 25 Nov 2018;13:15
+email;0.4130222842039746;0.4130222842039746;Sun 25 Nov 2018;13:12
+email;0.8702181547897986;0.8702181547897986;Sun 25 Nov 2018;13:03
+email;0.9978578976662807;0.9978578976662807;Sun 25 Nov 2018;12:55
+email;0.7619186326028434;0.7619186326028434;Sun 25 Nov 2018;12:51
+email;0.8695515824412038;0.8695515824412038;Sun 25 Nov 2018;12:48
+email;0.8827609372608485;0.8827609372608485;Sun 25 Nov 2018;12:42
+email;0.6781922070048686;0.6781922070048686;Sun 25 Nov 2018;12:40
+email;0.7320788169632186;0.7320788169632186;Sun 25 Nov 2018;12:37
+email;0.33851951225996935;0.33851951225996935;Sun 25 Nov 2018;12:34
+email;0.44701901712910064;0.44701901712910064;Sun 25 Nov 2018;12:29
+email;0.16963717120971933;0.16963717120971933;Sun 25 Nov 2018;12:17
+email;0.023876863523766056;0.023876863523766056;Sun 25 Nov 2018;12:12
+email;0.9581417399219336;0.9581417399219336;Sun 25 Nov 2018;12:10
+email;0.26665376011849296;0.26665376011849296;Sun 25 Nov 2018;12:07
+email;0.4725236192597293;0.4725236192597293;Sun 25 Nov 2018;09:34
+email;0.4422574338923604;0.4422574338923604;Sat 24 Nov 2018;15:57
+email;0.10075513925475199;0.10075513925475199;Sat 24 Nov 2018;15:56
+email;0.21923289356334852;0.21923289356334852;Sat 24 Nov 2018;15:51
+email;0.9379295789874854;0.9379295789874854;Sat 24 Nov 2018;15:13
+email;0.2489104865433247;0.2489104865433247;Sat 24 Nov 2018;15:10
+email;0.09893973873687845;0.09893973873687845;Sat 24 Nov 2018;15:07
+email;0.7598523890554263;0.7598523890554263;Sat 24 Nov 2018;15:03
+email;0.03371348094053628;0.03371348094053628;Sat 24 Nov 2018;14:55
+email;0.5392088249056222;0.5392088249056222;Sat 24 Nov 2018;14:54
+email;0.713790548394557;0.713790548394557;Sat 24 Nov 2018;14:45
+email;0.20189888040491044;0.20189888040491044;Sat 24 Nov 2018;14:43
+email;0.044028372123059656;0.044028372123059656;Sat 24 Nov 2018;14:35
+email;javax.mail.internet.MimeMultip;javax.mail.internet.MimeMultipart@32d0f47b;Wed 21 Nov 2018;14:04
+email;javax.mail.internet.MimeMultip;javax.mail.internet.MimeMultipart@5ea2c0d3;Mon 19 Nov 2018;08:11
+facebook;afinal não… não mesmo -_-;afinal não… não mesmo -_-;Tue 16 Oct 2018;21:04
+facebook;isto está giro sim senhor;isto está giro sim senhor;Tue 16 Oct 2018;21:04
+facebook;Olá pessoal;Olá pessoal;Tue 16 Oct 2018;21:03
