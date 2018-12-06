@@ -26,7 +26,7 @@ public class App {
 	private Boolean twitterConnected = false;
 	private Boolean emailConnected = false;
 	private ArrayList<Messages> appMessages = new ArrayList<Messages>(); // adicionado
-	private int[] v = {0,0,0};
+	private int[] v = { 0, 0, 0 };
 
 	/**
 	 * Default constructor
@@ -184,23 +184,24 @@ public class App {
 
 	public void writeMessages() {
 		this.addMessages();
-		
+
 		Writer writer = null;
-		
+
 		try {
-		    writer = new BufferedWriter(new OutputStreamWriter(
-		          new FileOutputStream("filename.txt"), "utf-8"));
-		    
-		    for(int i=0;i<appMessages.size();i++) {
-		    	writer.write(appMessages.get(i).toStringtxt());
-		    	writer.write("\n");
-		    }
-		    
-		    
+			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("filename.txt"), "utf-8"));
+
+			for (int i = 0; i < appMessages.size(); i++) {
+				writer.write(appMessages.get(i).toStringtxt());
+				writer.write("\n");
+			}
+
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, "Erro ao gerir ficheiro");
 		} finally {
-		   try {writer.close();} catch (Exception ex) {/*ignore*/}
+			try {
+				writer.close();
+			} catch (Exception ex) {
+				/* ignore */}
 		}
 	}
 
@@ -211,12 +212,11 @@ public class App {
 			this.appMessages.addAll(email.getMails());
 		}
 
-	
 		if (this.twitterConnected || v[1] == 1) {
 			this.appMessages.addAll(twitter.getIscteTweets());
 			this.appMessages.addAll(twitter.getMeTweets());
 		}
-	
+
 		if (this.facebookConnected || v[0] == 1) {
 			this.appMessages.addAll(this.facebook.getPosts());
 		}
@@ -337,7 +337,7 @@ public class App {
 		addPostsIntoGui();
 		this.writeMessages();
 		this.twitterConnected = false;
-	
+
 	}
 
 	/**
@@ -350,8 +350,8 @@ public class App {
 
 	public void connectTwitter(ArrayList<String> info) throws TwitterException {
 		verifyInternetConnection();
-		this.twitter.setInfo(info);
 		if (internetConnected) {
+			this.twitter.setInfo(info);
 			v[1] = 1;
 			this.twitterConnected = true;
 			this.gui.clearList();
@@ -360,7 +360,6 @@ public class App {
 			addTweetsIntoGui();
 			this.writeMessages();
 			this.facebookConnected = false;
-			
 		} else {
 			JOptionPane.showMessageDialog(null, "Sem Internet" + "\n" + "Funcionalidade indisponivel", "",
 					JOptionPane.INFORMATION_MESSAGE);
@@ -456,40 +455,46 @@ public class App {
 	 * @param test verifies if call comes from test
 	 */
 	public void facebookValidation(String test) {
-		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
-			JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
-					JOptionPane.INFORMATION_MESSAGE);
-		} else {
-			boolean isValid = true;
-			String accessToken = "";
-			String escolha = "";
-			if (test == null) {
-				escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
-			}
-			test = "";
-			if ((escolha != null && (escolha.equals("s") || escolha.equals("S")))
-					|| (test != null && test.equals("s"))) {
-				accessToken = "EAADfa40pTAwBAHVrPBdHGgr9JeN9XFqQVXvfcop6PUxl4Oa9nsDFD3A8lgW0sesvZAWDZBZCSj5sp0uhTiIQDFhWz"
-						+ "3sB4sFfCVA6bcLJrZCk6ZAUFxNBtqnrUvosZAOuKTNCdZB9El8tubEPbJJ9RaKpIQuW3c0JIEwpvnSMdzwVwZDZD";
-			} else if (escolha != null && (escolha.equals("n") || escolha.equals("N"))) {
-				accessToken = JOptionPane.showInputDialog("Introduza o access Token");
-			} else if (escolha != null || test.equals("lol")) {
-				JOptionPane.showMessageDialog(null, "Resposta Invalida", "", JOptionPane.INFORMATION_MESSAGE);
-				isValid = false;
+		verifyInternetConnection();
+		if (internetConnected) {
+			if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
+				JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
+						JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				isValid = false;
-			}
-			if (isValid && accessToken != null) {
-				try {
-					connectFacebook(accessToken);
-					JOptionPane.showMessageDialog(null, "Ligacao Estabelecida com Sucesso", "",
-							JOptionPane.INFORMATION_MESSAGE);
+				boolean isValid = true;
+				String accessToken = "";
+				String escolha = "";
+				if (test == null) {
+					escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
+				}
+				test = "";
+				if ((escolha != null && (escolha.equals("s") || escolha.equals("S")))
+						|| (test != null && test.equals("s"))) {
+					accessToken = "EAADfa40pTAwBAHVrPBdHGgr9JeN9XFqQVXvfcop6PUxl4Oa9nsDFD3A8lgW0sesvZAWDZBZCSj5sp0uhTiIQDFhWz"
+							+ "3sB4sFfCVA6bcLJrZCk6ZAUFxNBtqnrUvosZAOuKTNCdZB9El8tubEPbJJ9RaKpIQuW3c0JIEwpvnSMdzwVwZDZD";
+				} else if (escolha != null && (escolha.equals("n") || escolha.equals("N"))) {
+					accessToken = JOptionPane.showInputDialog("Introduza o access Token");
+				} else if (escolha != null || test.equals("lol")) {
+					JOptionPane.showMessageDialog(null, "Resposta Invalida", "", JOptionPane.INFORMATION_MESSAGE);
+					isValid = false;
+				} else {
+					isValid = false;
+				}
+				if (isValid && accessToken != null) {
+					try {
+						connectFacebook(accessToken);
+						JOptionPane.showMessageDialog(null, "Ligacao Estabelecida com Sucesso", "",
+								JOptionPane.INFORMATION_MESSAGE);
 
-				} catch (Exception e1) {
-					JOptionPane.showMessageDialog(null, "Dados de acesso ao facebook invalidos", "",
-							JOptionPane.INFORMATION_MESSAGE);
+					} catch (Exception e1) {
+						JOptionPane.showMessageDialog(null, "Dados de acesso ao facebook invalidos", "",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
 				}
 			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Sem Internet. Servico online indisponivel.", "",
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -499,39 +504,46 @@ public class App {
 	 * @param test checks if call comes from test
 	 */
 	public void emailValidation(String test) {
-		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
-			JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
-					JOptionPane.INFORMATION_MESSAGE);
-		} else {
-			boolean isValid = true;
-			String username = "";
-			String password = "";
-			String escolha = "";
-			if (test == null) {
-				escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
-			}
-			if ((escolha != null && (escolha.equals("s") || escolha.equals("S"))) || test != null && test.equals("s")) {
-				username = "ola123ola123ola123software@gmail.com";
-				password = "modfzrjlqjmkruhp";
-			} else if (escolha != null && (escolha.equals("n") || escolha.equals("N"))) {
-				username = JOptionPane.showInputDialog("Introduza o email");
-				password = JOptionPane.showInputDialog("Introduza a password da aplicacao");
-			} else if (escolha != null || (test != null && test.equals("ola"))) {
-				JOptionPane.showMessageDialog(null, "Resposta Invalida", "", JOptionPane.INFORMATION_MESSAGE);
-				isValid = false;
+		verifyInternetConnection();
+		if (this.internetConnected) {
+			if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
+				JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
+						JOptionPane.INFORMATION_MESSAGE);
 			} else {
-				isValid = false;
-			}
-			try {
-				if (isValid) {
-					connectEmail(username, password);
-					JOptionPane.showMessageDialog(null, "Ligacao Estabelecida com Sucesso", "",
+				boolean isValid = true;
+				String username = "";
+				String password = "";
+				String escolha = "";
+				if (test == null) {
+					escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
+				}
+				if ((escolha != null && (escolha.equals("s") || escolha.equals("S")))
+						|| test != null && test.equals("s")) {
+					username = "ola123ola123ola123software@gmail.com";
+					password = "modfzrjlqjmkruhp";
+				} else if (escolha != null && (escolha.equals("n") || escolha.equals("N"))) {
+					username = JOptionPane.showInputDialog("Introduza o email");
+					password = JOptionPane.showInputDialog("Introduza a password da aplicacao");
+				} else if (escolha != null || (test != null && test.equals("ola"))) {
+					JOptionPane.showMessageDialog(null, "Resposta Invalida", "", JOptionPane.INFORMATION_MESSAGE);
+					isValid = false;
+				} else {
+					isValid = false;
+				}
+				try {
+					if (isValid) {
+						connectEmail(username, password);
+						JOptionPane.showMessageDialog(null, "Ligacao Estabelecida com Sucesso", "",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Ligacao ao email sem sucesso.", "",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Ligacao ao email sem sucesso.", "",
-						JOptionPane.INFORMATION_MESSAGE);
 			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Sem Internet. Servico online indisponivel.", "",
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -541,11 +553,19 @@ public class App {
 	 */
 
 	public void postValidation() {
+
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
-			if (this.facebookConnected) {
-				JOptionPane.showMessageDialog(null, "Funcionalidade indisponivel", "", JOptionPane.INFORMATION_MESSAGE);
+			verifyInternetConnection();
+			if (internetConnected) {
+				if (this.facebookConnected) {
+					JOptionPane.showMessageDialog(null, "Funcionalidade indisponivel", "",
+							JOptionPane.INFORMATION_MESSAGE);
+				} else {
+					this.gui.postFrameContent();
+				}
 			} else {
-				this.gui.postFrameContent();
+				JOptionPane.showMessageDialog(null, "Sem internet. Servico online indisponivel.", "",
+						JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 
@@ -593,50 +613,56 @@ public class App {
 	 * @param test checks if call comes from test
 	 */
 	public void twitterValidation(String test) {
-		ArrayList<String> info = new ArrayList<String>();
-		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
-			JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
-					JOptionPane.INFORMATION_MESSAGE);
-		} else {
-			String escolha = "";
-			if (test == null) {
-				escolha = JOptionPane.showInputDialog("Pretende aceder ao Twitter como default user? [s/n]");
-			}
-			if ((escolha != null && (escolha.equals("s") || escolha.equals("S")))
-					|| (test != null && test.equals("s"))) {
-				info.add("bPcMjzld5PjWFDYMl401Ak0kw");
-				info.add(1, "V6gRA7z4HTpaiuNaoIYZ6wDxFkaEEr4jZRLOOWYOe8fdHP9Ita");
-				info.add(2, "1050480069683150848-Fjr0lz1c6jnRMCzg5VMr2xlhBD0hju");
-				info.add(3, "6TdjqHUWSz3BzkXb3tXNn8XknD7MlCN1a9kewLzFMPLBV");
-			} else if (escolha != null && (escolha.equals("n") || escolha.equals("N"))) {
-				info.add(JOptionPane.showInputDialog("Introduza AuthConsumerKey"));
-				info.add(1, JOptionPane.showInputDialog("Introduza AuthConsumerSecret"));
-				info.add(2, JOptionPane.showInputDialog("Introduza AuthAccessToken"));
-				info.add(3, JOptionPane.showInputDialog("Introduza AuthAccessTokenSecret"));
-			} else if (escolha != null || (test != null && test.equals("ola"))) {
-				JOptionPane.showMessageDialog(null, "Resposta Invalida", "", JOptionPane.INFORMATION_MESSAGE);
-			}
-
-			try {
-				if (test != null && !test.equals("s")) {
-					info.add("Penso");
-					info.add(1, "que");
-					info.add(2, "isto");
-					info.add(3, "falha");
-					connectTwitter(info);
+		verifyInternetConnection();
+		if (this.internetConnected) {
+			ArrayList<String> info = new ArrayList<String>();
+			if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
+				JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
+						JOptionPane.INFORMATION_MESSAGE);
+			} else {
+				String escolha = "";
+				if (test == null) {
+					escolha = JOptionPane.showInputDialog("Pretende aceder ao Twitter como default user? [s/n]");
 				}
-				if (info.size() != 0) {
-					connectTwitter(info);
-					this.gui.getResultsFrame().add(this.gui.getDisconnectButton());
-					this.gui.getResultsFrame().repaint();
-					JOptionPane.showMessageDialog(null, "Ligacao Estabelecida com Sucesso", "",
+				if ((escolha != null && (escolha.equals("s") || escolha.equals("S")))
+						|| (test != null && test.equals("s"))) {
+					info.add("bPcMjzld5PjWFDYMl401Ak0kw");
+					info.add(1, "V6gRA7z4HTpaiuNaoIYZ6wDxFkaEEr4jZRLOOWYOe8fdHP9Ita");
+					info.add(2, "1050480069683150848-Fjr0lz1c6jnRMCzg5VMr2xlhBD0hju");
+					info.add(3, "6TdjqHUWSz3BzkXb3tXNn8XknD7MlCN1a9kewLzFMPLBV");
+				} else if (escolha != null && (escolha.equals("n") || escolha.equals("N"))) {
+					info.add(JOptionPane.showInputDialog("Introduza AuthConsumerKey"));
+					info.add(1, JOptionPane.showInputDialog("Introduza AuthConsumerSecret"));
+					info.add(2, JOptionPane.showInputDialog("Introduza AuthAccessToken"));
+					info.add(3, JOptionPane.showInputDialog("Introduza AuthAccessTokenSecret"));
+				} else if (escolha != null || (test != null && test.equals("ola"))) {
+					JOptionPane.showMessageDialog(null, "Resposta Invalida", "", JOptionPane.INFORMATION_MESSAGE);
+				}
+
+				try {
+					if (test != null && !test.equals("s")) {
+						info.add("Penso");
+						info.add(1, "que");
+						info.add(2, "isto");
+						info.add(3, "falha");
+						connectTwitter(info);
+					}
+					if (info.size() != 0) {
+						connectTwitter(info);
+						this.gui.getResultsFrame().add(this.gui.getDisconnectButton());
+						this.gui.getResultsFrame().repaint();
+						JOptionPane.showMessageDialog(null, "Ligacao Estabelecida com Sucesso", "",
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+
+				} catch (TwitterException e1) {
+					JOptionPane.showMessageDialog(null, "Dados de acesso ao Twitter inválidos", "",
 							JOptionPane.INFORMATION_MESSAGE);
 				}
-
-			} catch (TwitterException e1) {
-				JOptionPane.showMessageDialog(null, "Dados de acesso ao Twitter inválidos", "",
-						JOptionPane.INFORMATION_MESSAGE);
 			}
+		} else {
+			JOptionPane.showMessageDialog(null, "Sem Internet. Servico online indisponivel.", "",
+					JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }
