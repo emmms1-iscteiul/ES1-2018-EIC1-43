@@ -5,10 +5,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,27 +24,23 @@ import javax.swing.WindowConstants;
 public class Gui {
 
 	private App app = new App(this, new Facebook(), new Twitter());
-
 	private JFrame resultsFrame;
 	private JFrame selectedFrame;
 	private JFrame sendFrame;
-
+	private JFrame filtrosFrame;
 	private JTextArea txtBody;
 	private JTextArea txtSend;
-	//private JList<String> list; //excluido
-	//private DefaultListModel<String> model; //excluido
-
 	private JButton disconnectButton;
 	private JButton facebookButton;
 	private JButton twitterButton;
 	private JButton emailButton;
-	private JButton refreshButton;
-
+	private JButton offlineButton;
 	private JButton filtros;
 	private JButton btnPost;
-	
 	private JScrollPane scroll;
 	private JPanel resultsArea;
+	
+
 
 	/**
 	 * 
@@ -96,6 +91,85 @@ public class Gui {
 
 		selectedFrame.setVisible(true);
 
+	}
+	
+	public void filtrosFrameContent() {
+
+		filtrosFrame = new JFrame("FILTRAR  MENSAGENS");
+		filtrosFrame.setMinimumSize(new Dimension(400, 250));
+		filtrosFrame.setLayout(null);
+		filtrosFrame.setResizable(false);
+		filtrosFrame.setLocationRelativeTo(null);
+		filtrosFrame.setIconImage(new ImageIcon("images/ba.png").getImage());;
+
+		
+		JLabel label = new JLabel("Selecione uma data para filtrar as mensagens correspondentes.");
+		label.setBounds(10, 10, 480, 30);
+		
+		JLabel label1 = new JLabel("Data Incial : ");
+		label1.setBounds(10, 40, 100, 30);
+		
+		JLabel label11 = new JLabel("Dia :");
+		JLabel label12 = new JLabel("Mês :");
+		JLabel label13 = new JLabel("Ano :");
+		label11.setBounds(10, 80, 30, 30);
+		label12.setBounds(110, 80, 30, 30);
+		label13.setBounds(220, 80, 30, 30);
+		
+		JLabel label14 = new JLabel("Hora :");
+		JLabel label15 = new JLabel("Minutos :");
+		label14.setBounds(10, 80, 30, 30);
+		label15.setBounds(110, 80, 30, 30);
+		
+		JComboBox<String> boxDay = new JComboBox<String>();
+		boxDay.setBounds(50, 80, 50, 30);
+		
+		boxDay.addItem("01"); boxDay.addItem("02"); boxDay.addItem("03"); boxDay.addItem("04");boxDay.addItem("05"); 
+		boxDay.addItem("06"); boxDay.addItem("07"); boxDay.addItem("08"); boxDay.addItem("09"); boxDay.addItem("10"); 
+		boxDay.addItem("11"); boxDay.addItem("12"); boxDay.addItem("13"); boxDay.addItem("14"); boxDay.addItem("15"); 
+		boxDay.addItem("16"); boxDay.addItem("17"); boxDay.addItem("18"); boxDay.addItem("19"); boxDay.addItem("20"); 
+		boxDay.addItem("21"); boxDay.addItem("22"); boxDay.addItem("23"); boxDay.addItem("24"); boxDay.addItem("25"); 
+		boxDay.addItem("26"); boxDay.addItem("27"); boxDay.addItem("28"); boxDay.addItem("29"); boxDay.addItem("30"); 
+		boxDay.addItem("31");
+		
+		JComboBox<String> boxMes = new JComboBox<String>();
+		boxMes.setBounds(150, 80, 60, 30);
+		
+		boxMes.addItem("Jan"); boxMes.addItem("Feb"); boxMes.addItem("Mar"); boxMes.addItem("Apr");boxMes.addItem("May"); 
+		boxMes.addItem("June"); boxMes.addItem("July"); boxMes.addItem("Aug"); boxMes.addItem("Sept"); boxMes.addItem("Oct"); 
+		boxMes.addItem("Nov"); boxMes.addItem("Dec");
+		
+		JComboBox<String> boxAno = new JComboBox<String>();
+		boxAno.setBounds(260, 80, 70, 30);
+		
+		boxAno.addItem("2018"); boxAno.addItem("2019");
+		
+
+		
+		
+		JButton aplicar = new JButton("APLICAR  FILTRO");
+		aplicar.setBounds(120, 160, 200, 40);
+		
+		aplicar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String data = boxDay.getSelectedItem() + " " + boxMes.getSelectedItem() + " " + boxAno.getSelectedItem();
+				
+				app.readMessagesFiltradas(data);
+				
+				filtrosFrame.dispose();
+			}
+
+		});
+			
+		filtrosFrame.add(boxDay); filtrosFrame.add(label13);
+		filtrosFrame.add(boxMes); filtrosFrame.add(label12);
+		filtrosFrame.add(label); filtrosFrame.add(label11);
+		filtrosFrame.add(boxAno); filtrosFrame.add(label1);
+		
+		filtrosFrame.add(aplicar);
+
+		filtrosFrame.setVisible(true);
 	}
 
 	/**
@@ -149,10 +223,14 @@ public class Gui {
 	private void addResultsFrameContent() {
 
 		disconnectButton = new JButton("DISCONNECT  APP");
-		disconnectButton.setBounds(100, 25, 140, 50);
+		disconnectButton.setBounds(250, 25, 140, 50);
 		disconnectButton.setBackground(new Color(237,28,36));
-		refreshButton = new JButton(new ImageIcon("images/refresh.png"));
-		refreshButton.setBounds(20, 25, 50, 50);
+		
+		offlineButton = new JButton("Mensagens Offline");
+		offlineButton.setBounds(50, 25, 140, 50);
+		offlineButton.setBackground(new Color(0,0,0));
+		offlineButton.setForeground(Color.WHITE);
+		
 		twitterButton = new JButton("   TWITTER", new ImageIcon("images/twitterminiicon.png"));
 		twitterButton.setBackground(new Color(150,150,150));
 		twitterButton.setBounds(460, 25, 150, 50);
@@ -176,27 +254,17 @@ public class Gui {
 		resultsFrame.add(emailButton);
 		resultsFrame.add(filtros);
 		resultsFrame.add(btnPost);
-		resultsFrame.add(refreshButton);
 		resultsFrame.add(disconnectButton);
+		resultsFrame.add(offlineButton);
 
 		JLabel label1 = new JLabel("RESULTS :");
 		JPanel panel2 = new JPanel();
 		panel2.add(label1);
 		panel2.setBounds(5, 90, 80, 20);
-
-		/*
-		model = new DefaultListModel<String>();
-		list = new JList<String>(model);
-		list.setPreferredSize(new Dimension(980, 500));
-		list.setFont(new Font("Serif", Font.PLAIN, 25));
-		list.setBackground(new Color(240,248,255));
-		*/                                                    //excluido
-		
-		resultsArea = new JPanel(); //adicionado
-	
-		//resultsArea.setLayout(new BoxLayout(resultsArea, BoxLayout.PAGE_AXIS));
+                                      
+		resultsArea = new JPanel(); 
 		resultsArea.setPreferredSize(new Dimension(930, 5000));
-		scroll = new JScrollPane(resultsArea); //modificado
+		scroll = new JScrollPane(resultsArea); 
 		scroll.setPreferredSize(new Dimension(965, 350));
 		
 		
@@ -207,15 +275,7 @@ public class Gui {
 		resultsFrame.add(panel2);
 		resultsFrame.add(panel3);
 
-		/*
-		btnDisplay.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				app.displayContent(false);
-			}
-
-		});
-		*/                                                      // EXCLUIDO
-
+		                                            
 		facebookButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				app.facebookValidation(null);	
@@ -240,17 +300,26 @@ public class Gui {
 			}
 		});
 		
-		refreshButton.addActionListener(new ActionListener() {
+		offlineButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//ação do botão disconnect
+				app.readMessages();
 			}
 		});
 
-		this.emailButton.addActionListener(new ActionListener() {
+		emailButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				app.emailValidation(null);
+			}
+
+		});
+		
+		filtros.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				filtrosFrameContent();
+				
 			}
 
 		});
@@ -277,12 +346,6 @@ public class Gui {
 		return resultsArea;
 	}
 
-	/*
-	public DefaultListModel<String> getModelList() {
-		return this.model;
-	}
-	*/                                                        // EXCLUIDO
-
 	public JTextArea getTxtBody() {
 		return txtBody;
 	}
@@ -291,16 +354,6 @@ public class Gui {
 		this.txtBody = txtBody;
 	}
 
-	/*
-	public JList<String> getList() {
-		return list;
-	}
-
-	public void setList(JList<String> list) {
-		this.list = list;
-	}
-    */                                                        //EXCLUIDO
-	
 	public App getApp() {
 		return app;
 	}

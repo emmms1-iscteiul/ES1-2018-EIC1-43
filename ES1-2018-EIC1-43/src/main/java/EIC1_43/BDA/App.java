@@ -1,20 +1,31 @@
 package EIC1_43.BDA;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Scanner;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import twitter4j.TwitterException;
 
 /**
  * "Main" project class
  *
  */
+
 public class App {
 
 	private EmailSessionBean email;
@@ -25,8 +36,8 @@ public class App {
 	private Boolean facebookConnected = false;
 	private Boolean twitterConnected = false;
 	private Boolean emailConnected = false;
-	private ArrayList<Messages> appMessages = new ArrayList<Messages>(); // adicionado
-	private int[] v = { 0, 0, 0 };
+	private ArrayList<Messages> appMessages = new ArrayList<Messages>();
+	private int[] v = {0,0,0};
 
 	/**
 	 * Default constructor
@@ -44,69 +55,7 @@ public class App {
 		this.gui.setApp(this);
 	}
 
-	public Gui getGui() {
-		return gui;
-	}
 
-	public void setGui(Gui gui) {
-		this.gui = gui;
-	}
-
-	public Facebook getFacebook() {
-		return facebook;
-	}
-
-	public void setFacebook(Facebook facebook) {
-		this.facebook = facebook;
-	}
-
-	public Twitter getTwitter() {
-		return twitter;
-	}
-
-	public void setTwitter(Twitter twitter) {
-		this.twitter = twitter;
-	}
-
-	public Boolean isInternetConnected() {
-		return internetConnected;
-	}
-
-	public void setInternetConnected(Boolean internetConnected) {
-		this.internetConnected = internetConnected;
-	}
-
-	public Boolean isFacebookConnected() {
-		return facebookConnected;
-	}
-
-	public void setFacebookConnected(Boolean facebookConnected) {
-		this.facebookConnected = facebookConnected;
-	}
-
-	public Boolean isTwitterConnected() {
-		return twitterConnected;
-	}
-
-	public void setTwitterConnected(Boolean twitterConnected) {
-		this.twitterConnected = twitterConnected;
-	}
-
-	public Boolean getEmailConnected() {
-		return emailConnected;
-	}
-
-	public void setEmailConnected(Boolean emailConnected) {
-		this.emailConnected = emailConnected;
-	}
-
-	public EmailSessionBean getEmail() {
-		return email;
-	}
-
-	public void setEmail(EmailSessionBean email) {
-		this.email = email;
-	}
 
 	/**
 	 * Adds tweets into GUI
@@ -116,8 +65,7 @@ public class App {
 		ArrayList<TwitterMessage> iscte = twitter.getIscteTweets();
 		ArrayList<TwitterMessage> me = twitter.getMeTweets();
 		for (TwitterMessage s : me) {
-			// this.gui.getModelList().addElement(" me: " + s.ObjectRepresention());
-			// EXCLUIDO
+			
 			gui.addMessage(s.ObjectRepresentation());
 
 			ActionListener action1 = new ActionListener() {
@@ -132,8 +80,7 @@ public class App {
 			s.addListner(action1);
 		}
 		for (TwitterMessage s : iscte) {
-			// this.gui.getModelList().addElement("ISCTE: " + s.ObjectRepresention());
-			// EXCLUIDO
+			
 			gui.addMessage(s.ObjectRepresentation());
 
 			ActionListener action2 = new ActionListener() {
@@ -149,62 +96,217 @@ public class App {
 		gui.getResultsArea().updateUI();
 	}
 
-	/**
-	 * Shows tweet on GUI
-	 * 
-	 * @param i
-	 * @return
-	 */
-	/*
-	 * public String showTweetOnGui(int i) { if (i < twitter.getMeTweets().size()) {
-	 * return twitter.getMeTweets().get(i).getContent(); } else { if
-	 * (twitter.getIscteTweets() != null && twitter.getIscteTweets().size() > 0) {
-	 * return twitter.getIscteTweets().get(i -
-	 * twitter.getMeTweets().size()).getContent(); } } return ""; }
-	 */ // EXCLUIDO
-	/**
-	 * 
-	 * Shows post on GUI
-	 * 
-	 * @param s
-	 * @return
-	 */
 
-	/*
-	 * public String showPostOnGui(int i) { return
-	 * facebook.getPosts().get(i).getContent(); }
-	 * 
-	 * public String showEmailOnGui(int i) { return
-	 * email.getMails().get(i).getContent(); }
-	 */ // EXCLUIDO
+
 	/**
-	 * Adds facebook posts into GUI
+	 * 
+	 * Writes messages to file 
 	 * 
 	 */
-
+	
+	
 	public void writeMessages() {
 		this.addMessages();
-
+		
 		Writer writer = null;
-
+		
 		try {
-			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("filename.txt"), "utf-8"));
-
-			for (int i = 0; i < appMessages.size(); i++) {
-				writer.write(appMessages.get(i).toStringtxt());
-				writer.write("\n");
-			}
-
+		    writer = new BufferedWriter(new OutputStreamWriter(
+		          new FileOutputStream("SaveMessages.txt"), "utf-8"));
+		    
+		    for(int i=0;i<appMessages.size();i++) {
+		    	writer.write(appMessages.get(i).toStringTxt());
+		    	writer.write("\n");
+		    }
+		    
+		    
 		} catch (Exception ex) {
 			JOptionPane.showMessageDialog(null, "Erro ao gerir ficheiro");
 		} finally {
-			try {
-				writer.close();
-			} catch (Exception ex) {
-				/* ignore */}
+		   try {writer.close();} catch (Exception ex) {}
 		}
 	}
 
+	
+	/**
+	 * 
+	 * saves messages in lastMessages ArrayList
+	 * 
+	 */
+
+	
+	public void readMessages() {
+		
+		ArrayList<JPanel> lastMessages = new ArrayList<JPanel>();
+		
+		Scanner read;
+		
+		try {
+			
+			read = new Scanner (new File("SaveMessages.txt"));
+			
+			while(read.hasNextLine()) {
+				
+				String lineReading = read.nextLine();
+				String [] vetorParametros = lineReading.split(";");
+				
+				if (vetorParametros[0].equals("twitter")) {
+					JPanel object = ObjectRepresentation("images/"+vetorParametros[0]+".png", vetorParametros[0].toUpperCase(), 
+							vetorParametros[1], vetorParametros[2], vetorParametros[3], vetorParametros[4], new Color(184,235,254));
+					lastMessages.add(object);
+					
+				} else if (vetorParametros[0].equals("facebook")) {
+					JPanel object = ObjectRepresentation("images/"+vetorParametros[0]+".png", vetorParametros[0].toUpperCase(), 
+							vetorParametros[1], vetorParametros[2], vetorParametros[3], vetorParametros[4], new Color(103,155,218));
+					lastMessages.add(object);
+					
+				} else if (vetorParametros[0].equals("email")) {
+					JPanel object = ObjectRepresentation("images/"+vetorParametros[0]+".png", vetorParametros[0].toUpperCase(), 
+							vetorParametros[1], vetorParametros[2], vetorParametros[3], vetorParametros[4], new Color(250, 171, 171));
+					lastMessages.add(object);
+					
+				}
+			}
+			
+		} catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
+		}
+		
+		gui.clearList();
+		
+		for(JPanel j: lastMessages) {
+			gui.addMessage(j);
+		}
+		gui.getResultsArea().updateUI();
+		
+	}
+	
+	
+	/**
+	 * 
+	 * selects filtered messages
+	 * 
+	 * @param data filter used in messages selection
+	 */
+	
+	
+	public void readMessagesFiltradas(String data) {
+		
+		ArrayList<JPanel> filterMessages = new ArrayList<JPanel>();
+		
+		Scanner read;
+		
+		try {
+			
+			read = new Scanner (new File("SaveMessages.txt"));
+			
+			
+			while(read.hasNextLine()) {
+				
+				String lineReading = read.nextLine();
+				String [] vetorParametros = lineReading.split(";");
+				
+				if(vetorParametros[3].substring(4).equals(data)) {
+					
+					if (vetorParametros[0].equals("twitter")) {
+						JPanel object = ObjectRepresentation("images/"+vetorParametros[0]+".png", vetorParametros[0].toUpperCase(), 
+							vetorParametros[1], vetorParametros[2], vetorParametros[3], vetorParametros[4], new Color(184,235,254));
+						filterMessages.add(object);
+					
+					} else if (vetorParametros[0].equals("facebook")) {
+						JPanel object = ObjectRepresentation("images/"+vetorParametros[0]+".png", vetorParametros[0].toUpperCase(), 
+							vetorParametros[1], vetorParametros[2], vetorParametros[3], vetorParametros[4], new Color(103,155,218));
+						filterMessages.add(object);
+					
+					} else if (vetorParametros[0].equals("email")) {
+						JPanel object = ObjectRepresentation("images/"+vetorParametros[0]+".png", vetorParametros[0].toUpperCase(), 
+							vetorParametros[1], vetorParametros[2], vetorParametros[3], vetorParametros[4], new Color(250, 171, 171));
+						filterMessages.add(object);
+					
+					}
+				} 
+			}
+			
+		} catch (FileNotFoundException e) {
+			
+			e.printStackTrace();
+		}
+		
+		gui.clearList();
+		
+		if (filterMessages.size()==0) {
+			
+			JOptionPane.showMessageDialog(null, "Não há mensagens para a data especificada.", "", JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+		
+		for(JPanel j: filterMessages) {
+			gui.addMessage(j);
+		}
+		gui.getResultsArea().updateUI();
+	}
+	
+	/**
+	 * 
+	 * represents objects in  JPanel 
+	 * 
+	 * @param imageCaminho
+	 * @param origem
+	 * @param title
+	 * @param content
+	 * @param data
+	 * @param hora
+	 * @param color
+	 * @return
+	 */
+	
+	private JPanel ObjectRepresentation (String imageCaminho, String origem, String title, String content, String data, String hora, Color color) {
+		
+		JPanel panelMessage = new JPanel();
+		panelMessage.setPreferredSize(new Dimension(930, 60));
+		panelMessage.setLayout(null);
+		
+		JLabel labelImage = new JLabel(new ImageIcon(imageCaminho));
+		labelImage.setBounds(5, 0, 60, 60);
+		JLabel labelOrigem = new JLabel(origem);
+		labelOrigem.setBounds(75, 0, 100, 60);
+		JLabel labelTitle = new JLabel(title);
+		labelTitle.setBounds(180, 0, 200, 60);
+		JLabel labelDate = new JLabel(data);
+		labelDate.setBounds(600, 0, 120, 60);
+		JLabel labelHora = new JLabel(hora);
+		labelHora.setBounds(750, 0, 70, 60);
+		
+		JButton viewButton = new JButton("Ver");
+		viewButton.setBounds(850, 15, 70, 30);
+		
+		viewButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				gui.resultsFrameContent();
+				gui.getTxtBody().setText(content);
+				
+			}
+		});
+		
+		panelMessage.add(labelImage); panelMessage.add(labelOrigem);
+		panelMessage.add(labelTitle); panelMessage.add(labelDate);
+		panelMessage.add(labelHora); panelMessage.add(viewButton);
+		
+		panelMessage.setBackground(color);
+		
+		return panelMessage;
+	}
+
+	
+	/**
+	 * saves messages in appMessages arrayList
+	 * 
+	 */
+	
 	public void addMessages() {
 		appMessages = new ArrayList<Messages>();
 
@@ -212,21 +314,39 @@ public class App {
 			this.appMessages.addAll(email.getMails());
 		}
 
+	
 		if (this.twitterConnected || v[1] == 1) {
 			this.appMessages.addAll(twitter.getIscteTweets());
 			this.appMessages.addAll(twitter.getMeTweets());
 		}
-
+	
 		if (this.facebookConnected || v[0] == 1) {
 			this.appMessages.addAll(this.facebook.getPosts());
 		}
+		
+		Collections.sort(appMessages, new Comparator<Messages>() {
+
+			@Override
+			public int compare(Messages arg0, Messages arg1) {
+				return arg0.getDate().compareTo(arg1.getDate());
+			}
+			
+		});
+		
+		Collections.reverse(appMessages);
 	}
 
+	
+	/**
+	 * Adds facebook posts into GUI
+	 * 
+	 */
+	
 	public void addPostsIntoGui() {
 
 		ArrayList<FacebookMessage> a = facebook.getPosts();
 		for (FacebookMessage s : a) {
-			// this.gui.getModelList().addElement(" me: " + s.ObjectRepresention());
+			
 			gui.addMessage(s.ObjectRepresentation());
 
 			ActionListener action = new ActionListener() {
@@ -242,10 +362,16 @@ public class App {
 		gui.getResultsArea().updateUI();
 	}
 
+	
+	/**
+	 * adds Emails into Gui
+	 * 
+	 */
+	
 	public void addEmailsIntoGui() {
 		ArrayList<EmailMessage> array = email.getMails();
 		for (EmailMessage msg : array) {
-			// this.gui.getModelList().addElement(" me: " + msg.ObjectRepresention());
+			
 			gui.addMessage(msg.ObjectRepresentation());
 
 			ActionListener action = new ActionListener() {
@@ -274,9 +400,18 @@ public class App {
 		}
 	}
 
+	
+	/**
+	 * Notifies all threads
+	 * 
+	 */
+	
 	public synchronized void notAll() {
 		notifyAll();
 	}
+	
+	
+	
 
 	/**
 	 * Displays posts or tweets content to user
@@ -284,38 +419,26 @@ public class App {
 	 * @param isTest verifies if call comes from test
 	 */
 
-	public void displayContent(String content /* boolean isTest */) {
-		// if (displayValidation() || isTest) { if excluido
+	public void displayContent(String content) {
+		
 		if (this.twitterConnected && !this.facebookConnected && !emailConnected) {
+			
 			this.gui.resultsFrameContent();
-			// if (!isTest) {
 			this.gui.getTxtBody().setText(content);
-			// }
+			
 		} else if (this.facebookConnected && !this.twitterConnected && !emailConnected) {
 			this.gui.resultsFrameContent();
-			// if (isTest) {
+			
 			this.gui.getTxtBody().setText(content);
-			// } else {
-			// this.gui.getTxtBody().setText(showPostOnGui(this.gui.getList().getSelectedIndex()));
-			// }
-
+		
 		} else if (this.emailConnected && !this.facebookConnected && !this.twitterConnected) {
 			this.gui.resultsFrameContent();
 			this.gui.getTxtBody().setText(content);
 		}
-		// }
+		
 
 	}
 
-	/**
-	 * makes display validation
-	 * 
-	 * @return boolean if it's ok to display
-	 */
-	/*
-	 * public boolean displayValidation() { return this.gui.getList() != null &&
-	 * !this.gui.getList().isSelectionEmpty(); }
-	 */ // EXCLUIDO
 	/**
 	 * 
 	 * Connects app to facebook
@@ -333,11 +456,11 @@ public class App {
 		this.facebook.setClient();
 		this.facebook.updatePosts();
 		this.gui.clearList();
-		gui.getResultsArea().updateUI();// adicionado
+		gui.getResultsArea().updateUI();
 		addPostsIntoGui();
 		this.writeMessages();
 		this.twitterConnected = false;
-
+	
 	}
 
 	/**
@@ -350,16 +473,18 @@ public class App {
 
 	public void connectTwitter(ArrayList<String> info) throws TwitterException {
 		verifyInternetConnection();
+		this.twitter.setInfo(info);
 		if (internetConnected) {
 			this.twitter.setInfo(info);
 			v[1] = 1;
 			this.twitterConnected = true;
 			this.gui.clearList();
-			gui.getResultsArea().updateUI();// adicionado
+			gui.getResultsArea().updateUI();
 			this.twitter.updateTwitter();
 			addTweetsIntoGui();
 			this.writeMessages();
 			this.facebookConnected = false;
+			
 		} else {
 			JOptionPane.showMessageDialog(null, "Sem Internet" + "\n" + "Funcionalidade indisponivel", "",
 					JOptionPane.INFORMATION_MESSAGE);
@@ -383,7 +508,7 @@ public class App {
 			this.twitter.sendTweet(this.gui.getTxtSend().getText());
 			this.twitter.updateTwitter();
 			this.gui.clearList();
-			gui.getResultsArea().updateUI();// adicionado
+			gui.getResultsArea().updateUI();
 			this.gui.getTxtSend().setText("");
 			addTweetsIntoGui();
 			this.facebookConnected = false;
@@ -395,7 +520,7 @@ public class App {
 		} else if (this.emailConnected && !this.facebookConnected && !this.twitterConnected && this.internetConnected) {
 			this.email.sendEmail(destino, assunto, this.gui.getTxtSend().getText());
 			this.gui.clearList();
-			gui.getResultsArea().updateUI();// adicionado
+			gui.getResultsArea().updateUI();
 			this.gui.getTxtSend().setText("");
 			this.writeMessages();
 		} else {
@@ -429,8 +554,8 @@ public class App {
 		email = new EmailSessionBean(username, password);
 		this.email.updateEmail();
 		this.emailConnected = true;
-		this.gui.clearList();// adicionado
-		gui.getResultsArea().updateUI();// adicionado
+		this.gui.clearList();
+		gui.getResultsArea().updateUI();
 		addEmailsIntoGui();
 		this.writeMessages();
 		this.facebookConnected = false;
@@ -456,7 +581,7 @@ public class App {
 	 */
 	public void facebookValidation(String test) {
 		verifyInternetConnection();
-		if (internetConnected) {
+		if(internetConnected) {
 			if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
 				JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -493,8 +618,7 @@ public class App {
 				}
 			}
 		} else {
-			JOptionPane.showMessageDialog(null, "Sem Internet. Servico online indisponivel.", "",
-					JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Sem Internet. Servico online indisponivel.", "", JOptionPane.INFORMATION_MESSAGE);	
 		}
 	}
 
@@ -505,7 +629,8 @@ public class App {
 	 */
 	public void emailValidation(String test) {
 		verifyInternetConnection();
-		if (this.internetConnected) {
+		if(internetConnected) {
+			
 			if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
 				JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -517,8 +642,7 @@ public class App {
 				if (test == null) {
 					escolha = JOptionPane.showInputDialog("Pretende aceder ao email como default user? [s/n]");
 				}
-				if ((escolha != null && (escolha.equals("s") || escolha.equals("S")))
-						|| test != null && test.equals("s")) {
+				if ((escolha != null && (escolha.equals("s") || escolha.equals("S"))) || test != null && test.equals("s")) {
 					username = "ola123ola123ola123software@gmail.com";
 					password = "modfzrjlqjmkruhp";
 				} else if (escolha != null && (escolha.equals("n") || escolha.equals("N"))) {
@@ -541,9 +665,9 @@ public class App {
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
+			
 		} else {
-			JOptionPane.showMessageDialog(null, "Sem Internet. Servico online indisponivel.", "",
-					JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Sem Internet. Servico online indisponivel.", "", JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 
@@ -553,19 +677,16 @@ public class App {
 	 */
 
 	public void postValidation() {
-
 		if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
 			verifyInternetConnection();
 			if (internetConnected) {
 				if (this.facebookConnected) {
-					JOptionPane.showMessageDialog(null, "Funcionalidade indisponivel", "",
-							JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Funcionalidade indisponivel", "", JOptionPane.INFORMATION_MESSAGE);
 				} else {
 					this.gui.postFrameContent();
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "Sem internet. Servico online indisponivel.", "",
-						JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Sem internet. Servico online indisponivel.", "", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 
@@ -614,7 +735,8 @@ public class App {
 	 */
 	public void twitterValidation(String test) {
 		verifyInternetConnection();
-		if (this.internetConnected) {
+		if(internetConnected) {
+			
 			ArrayList<String> info = new ArrayList<String>();
 			if (this.facebookConnected || this.twitterConnected || this.emailConnected) {
 				JOptionPane.showMessageDialog(null, "Abandone o servico que esta a utilizar", "",
@@ -660,9 +782,157 @@ public class App {
 							JOptionPane.INFORMATION_MESSAGE);
 				}
 			}
+			
 		} else {
-			JOptionPane.showMessageDialog(null, "Sem Internet. Servico online indisponivel.", "",
-					JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Sem Internet. Servico online indisponivel.", "", JOptionPane.INFORMATION_MESSAGE);
 		}
+	}
+	/**
+	 * gets GUI
+	 * 
+	 * @return GUI
+	 */
+	public Gui getGui() {
+		return gui;
+	}
+
+	/**
+	 * sets gui to app class
+	 * 
+	 * @param gui
+	 */
+	
+	public void setGui(Gui gui) {
+		this.gui = gui;
+	}
+	
+	/**
+	 * gets facebook saved in app
+	 * 
+	 * @return Facebook
+	 */
+
+	public Facebook getFacebook() {
+		return facebook;
+	}
+
+	
+	/**
+	 * sets app facebook
+	 * 
+	 * @param facebook
+	 */
+	public void setFacebook(Facebook facebook) {
+		this.facebook = facebook;
+	}
+
+	
+	/**
+	 * gets Twitter
+	 * 
+	 * @return Twitter
+	 */
+	public Twitter getTwitter() {
+		return twitter;
+	}
+
+	/**
+	 * sets twitter to app 
+	 * @param twitter
+	 */
+	public void setTwitter(Twitter twitter) {
+		this.twitter = twitter;
+	}
+
+	/**
+	 * returns internetConnection state
+	 * @return boolean 
+	 */
+	public Boolean isInternetConnected() {
+		return internetConnected;
+	}
+
+	
+	/**
+	 * sets current internet connection state
+	 * 
+	 * @param internetConnected
+	 */
+	public void setInternetConnected(Boolean internetConnected) {
+		this.internetConnected = internetConnected;
+	}
+
+	/**
+	 * returns if app is facebookconnected
+	 * @return boolean
+	 */
+	public Boolean isFacebookConnected() {
+		return facebookConnected;
+	}
+
+	
+	/**
+	 * 
+	 * modifies app connection facebook
+	 * @param facebookConnected
+	 */
+	public void setFacebookConnected(Boolean facebookConnected) {
+		this.facebookConnected = facebookConnected;
+	}
+
+	
+	/**
+	 * returns if app is currently on a twitter connection
+	 * @return boolean
+	 */
+	public Boolean isTwitterConnected() {
+		return twitterConnected;
+	}
+	
+	/**
+	 * sets app twitter connection
+	 * @param twitterConnected
+	 */
+
+	public void setTwitterConnected(Boolean twitterConnected) {
+		this.twitterConnected = twitterConnected;
+	}
+	
+	/**
+	 * 
+	 * returns if app is connected to email
+	 * 
+	 * @return boolean
+	 */
+
+	public Boolean getEmailConnected() {
+		return emailConnected;
+	}
+
+	/**
+	 * sets app email connection
+	 * 
+	 * @param emailConnected
+	 */
+	
+	public void setEmailConnected(Boolean emailConnected) {
+		this.emailConnected = emailConnected;
+	}
+
+	/**
+	 * returns email linked to app
+	 * @return EmailSessionBean
+	 */
+	
+	public EmailSessionBean getEmail() {
+		return email;
+	}
+
+	/**
+	 * sets email on app
+	 * @param email
+	 */
+	public void setEmail(EmailSessionBean email) {
+		this.email = email;
 	}
 }

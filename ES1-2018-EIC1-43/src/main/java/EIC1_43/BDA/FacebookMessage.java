@@ -43,6 +43,7 @@ public class FacebookMessage extends Messages {
 		viewButton.addActionListener(listener);
 	}
 	
+	@Override
 	public Date getDate() {
 		return date;
 	}
@@ -141,9 +142,10 @@ public class FacebookMessage extends Messages {
 	 * aparecer na lista de resultados da interface grafica com o utilizador.
 	 */
 	
-public String toStringTxt () {
+	@Override
+	public String toStringTxt () {
 		
-		String object =  "facebook" + "," + super.getContent() + ";" + data + ";" + hora;
+		String object =  "facebook" + ";" + title + ";" + super.getContent() + ";" + data + ";" + hora;
 		return object;
 	}
 
@@ -177,9 +179,4 @@ public String toStringTxt () {
 		return panelMessage;
 	}
 
-	@Override
-	public String toStringtxt() {
-		// TODO Auto-generated method stub
-		return "facebook" + ";" + super.getContent() + ";" + data + ";" + hora;
-	}
 }

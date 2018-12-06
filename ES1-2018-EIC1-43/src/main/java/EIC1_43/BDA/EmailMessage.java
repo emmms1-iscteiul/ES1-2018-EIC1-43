@@ -27,6 +27,7 @@ public class EmailMessage extends Messages {
 		viewButton.addActionListener(listener);
 	}
 
+	@Override
 	public Date getDate() {
 		return date;
 	}
@@ -85,9 +86,15 @@ public class EmailMessage extends Messages {
 		hora = time;
 	}
 
+	@Override
 	public String toStringTxt() {
 
-		String object = "twitter" + ";" + super.getContent() + ";" + data + ";" + hora;
+		String content = super.getContent();
+		content = content.replace("\n","").replace("\r","");
+		
+		title = title.replace("\n","").replace("\r","");
+		
+		String object = "email" + ";" + title + ";" + content + ";" + data + ";" + hora;
 		return object;
 	}
 
@@ -121,12 +128,6 @@ public class EmailMessage extends Messages {
 		panelMessage.setBackground(new Color(250, 171, 171));
 
 		return panelMessage;
-	}
-
-	@Override
-	public String toStringtxt() {
-		return "email" + ";" + super.getContent() + ";" + data + ";" + hora;
-
 	}
 
 }
