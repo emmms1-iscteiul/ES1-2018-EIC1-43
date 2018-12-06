@@ -1,5 +1,7 @@
 package EIC1_43.BDA;
 
+import java.util.Date;
+
 /**
  * Classe abstracta que representa as tres subclasses FacebookMessage, TwitterMessage e EmailMessage,
  * que estendem esta classe e herdam/sobrepoem os seu atributos e metodos.
@@ -10,7 +12,7 @@ package EIC1_43.BDA;
  *
  */
 
-public abstract class Message {
+public abstract class Messages {
 	
 	private String content;
 	
@@ -20,7 +22,7 @@ public abstract class Message {
 	 * @param content argumento que recebe uma string relativa ao conteudo da mensagem.
 	 */
 	
-	public Message (String content) {
+	public Messages (String content) {
 		
 		this.setContent(content);
 	}
@@ -38,5 +40,9 @@ public abstract class Message {
 	 */
 	
 	public abstract void tratarDataHora ();
+	
+	public abstract String toStringTxt();
+	
+	public abstract Date getDate();
 		
 }

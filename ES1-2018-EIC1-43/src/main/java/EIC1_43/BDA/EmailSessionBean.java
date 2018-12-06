@@ -161,6 +161,5 @@ public class EmailSessionBean {
 	public void setTransport(Transport transport) {
 		this.transport = transport;
 	}
-	
-	
+		
 }

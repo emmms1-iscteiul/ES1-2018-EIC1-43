@@ -76,12 +76,12 @@ public class Twitter {
 
 		for (Status status : statuses) {
 			if (status.getUser().getName() != null && status.getUser().getName().contains("ISCTE")) {
-				// Cria e adiciona à lista iscte Tweets objectos do tipo TwitterMessage para todos os resultados obtidos do twitter
+				
 				TwitterMessage twitterMessage = new TwitterMessage (status.getCreatedAt(), status.getText());
 				iscteTweets.add(twitterMessage);
 			}
 		}
-		// Compara os objectos TwitterMessage por data e ordena os resultados do mais antigo para o mais recente
+		
 		Collections.sort(iscteTweets, new Comparator<TwitterMessage>() {
 
 			@Override
@@ -90,7 +90,7 @@ public class Twitter {
 			}
 			
 		});
-		// Inverte a lista iscteTweets por forma a que as mensagens apareçam na interface da mais recente para a mais antiga.
+		
 		Collections.reverse(iscteTweets);
 
 		for (Status status : statuses) {
@@ -130,7 +130,6 @@ public class Twitter {
 	}
 	
 	
-
 	public ConfigurationBuilder getCb() {
 		return cb;
 	}
