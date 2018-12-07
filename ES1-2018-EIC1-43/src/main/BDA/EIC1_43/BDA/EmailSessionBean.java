@@ -1,8 +1,14 @@
 package EIC1_43.BDA;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Properties;
+import javax.mail.Folder;
 import javax.mail.Message;
 import javax.mail.Session;
+import javax.mail.Store;
 import javax.mail.Transport;
+import javax.mail.URLName;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
@@ -19,6 +25,7 @@ public class EmailSessionBean {
 	private Properties props;
 	private Session session;
 	private Transport transport;
+	private ArrayList<EmailMessage> mails = new ArrayList<EmailMessage>();
 	
 	/**
 	 * 
@@ -67,46 +74,150 @@ public class EmailSessionBean {
 			mailMessage.setSubject(subject);
 			transport.sendMessage(mailMessage, mailMessage.getAllRecipients());
 	}
+	
+	/**
+	 * Updates e-mail session
+	 * @throws Exception
+	 */
+	
+	public void updateEmail() throws Exception {
+		URLName url;
+		url = new URLName("imaps", "imap.gmail.com", 993, "INBOX", this.email, password);
 
+		Session session = null;
+		Properties props = null;
+			try {
+				props = System.getProperties();
+			} catch (SecurityException sex) {
+				props = new Properties();
+			}
+			session = Session.getInstance(props, null);
+		
+		Store store = session.getStore(url);
+		store.connect();
+		Folder folder = store.getFolder(url);
+
+		folder.open(Folder.READ_WRITE);
+		
+		Message[] m = folder.getMessages();
+		
+		for(int i=0;i<m.length;i++) {
+			EmailMessage msg = new EmailMessage(m[i].getReceivedDate(),m[i].getContent().toString());
+			this.mails.add(msg);
+		}
+		
+		Collections.sort(mails, new Comparator<EmailMessage>() {
+
+			@Override
+			public int compare(EmailMessage arg0, EmailMessage arg1) {
+				return arg1.getDate().compareTo(arg0.getDate());
+			}
+			
+		});
+		
+		folder.close(false);
+		store.close();
+		store = null;
+		session = null;
+	}
+
+	/**
+	 * Returns the list of emails
+	 * @return
+	 */
+	
+	public ArrayList<EmailMessage> getMails() {
+		return mails;
+	}
+
+	/**
+	 * Returns email
+	 * @return
+	 */
+	
 	public String getEmail() {
 		return email;
 	}
 
+	/**
+	 * Sets email
+	 * @param email
+	 */
+	
 	public void setEmail(String email) {
 		this.email = email;
 	}
 
+	/**
+	 * Returns password
+	 * @return
+	 */
+	
 	public String getPassword() {
 		return password;
 	}
 
+	/**
+	 * Sets password
+	 * @param password
+	 */
+	
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
+	/**
+	 * Returns properties
+	 * @return
+	 */
+	
 	public Properties getProps() {
 		return props;
 	}
 
+	/**
+	 * Sets properties
+	 * @param props
+	 */
+	
 	public void setProps(Properties props) {
 		this.props = props;
 	}
 
+	/**
+	 * Returns session
+	 * @return
+	 */
+	
 	public Session getSession() {
 		return session;
 	}
 
+	/**
+	 * Sets session
+	 * @param session
+	 */
+	
 	public void setSession(Session session) {
 		this.session = session;
 	}
 
+	/**
+	 * Returns transport
+	 * @return
+	 */
+	
 	public Transport getTransport() {
 		return transport;
 	}
 
+	/**
+	 * Sets transport
+	 * @param transport
+	 */
+	
 	public void setTransport(Transport transport) {
 		this.transport = transport;
 	}
-	
-	
+		
 }

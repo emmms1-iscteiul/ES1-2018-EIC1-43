@@ -38,9 +38,20 @@ public class Twitter {
 		return source;
 	}
 
+	/**
+	 * returns iscte tweets
+	 * 
+	 * @return ArrayList<TwitterMessage>
+	 */
 	public ArrayList<TwitterMessage> getIscteTweets() {
 		return this.iscteTweets;
 	}
+	
+	/**
+	 * returns user tweets
+	 * 
+	 * @return ArrayList<TwitterMessage>
+	 */
 
 	public ArrayList<TwitterMessage> getMeTweets() {
 		return this.meTweets;
@@ -76,21 +87,21 @@ public class Twitter {
 
 		for (Status status : statuses) {
 			if (status.getUser().getName() != null && status.getUser().getName().contains("ISCTE")) {
-				// Cria e adiciona à lista iscte Tweets objectos do tipo TwitterMessage para todos os resultados obtidos do twitter
+				
 				TwitterMessage twitterMessage = new TwitterMessage (status.getCreatedAt(), status.getText());
 				iscteTweets.add(twitterMessage);
 			}
 		}
-		// Compara os objectos TwitterMessage por data e ordena os resultados do mais antigo para o mais recente
+		
 		Collections.sort(iscteTweets, new Comparator<TwitterMessage>() {
 
 			@Override
 			public int compare(TwitterMessage arg0, TwitterMessage arg1) {
-				return arg1.getData().compareTo(arg0.getData());
+				return arg1.getDate().compareTo(arg0.getDate());
 			}
 			
 		});
-		// Inverte a lista iscteTweets por forma a que as mensagens apareçam na interface da mais recente para a mais antiga.
+		
 		Collections.reverse(iscteTweets);
 
 		for (Status status : statuses) {
@@ -112,37 +123,76 @@ public class Twitter {
 		
 		Collections.reverse(meTweets);
 	}
+	
+	/**
+	 * returns twitter from twitter4j API
+	 * 
+	 * @return twitter4j.Twitter
+	 */
 
 	public twitter4j.Twitter getTwitter() {
 		return twitter;
 	}
 
+	/**
+	 * sets Twitter 
+	 * 
+	 * @param twitter
+	 */
+	
 	public void setTwitter(twitter4j.Twitter twitter) {
 		this.twitter = twitter;
 	}
 
+	/**
+	 * sets IscteTweets 
+	 * 
+	 * @param iscteTweets
+	 */
 	public void setIscteTweets(ArrayList<TwitterMessage> iscteTweets) {
 		this.iscteTweets = iscteTweets;
 	}
 
+	/**
+	 * sets user tweets
+	 * @param meTweets
+	 */
 	public void setMeTweets(ArrayList<TwitterMessage> meTweets) {
 		this.meTweets = meTweets;
 	}
 	
-	
-
+	/**
+	 * gets configurationBuilder - class needed for twitter process
+	 * 
+	 * @return ConfigurationBuilder
+	 */
 	public ConfigurationBuilder getCb() {
 		return cb;
 	}
+	
+	/**
+	 * sets configurationBuilder
+	 * @param cb
+	 */
 
 	public void setCb(ConfigurationBuilder cb) {
 		this.cb = cb;
 	}
 
+	/**
+	 * returns twitterfactory - class needed for twitter process
+	 * 
+	 * @return TwitterFactory
+	 */
 	public TwitterFactory getTf() {
 		return tf;
 	}
 
+	/**
+	 * sets twitter factory
+	 * 
+	 * @param tf
+	 */
 	public void setTf(TwitterFactory tf) {
 		this.tf = tf;
 	}

@@ -29,7 +29,7 @@ public class InternetConnectionChecker extends Thread {
 	
 	/**
 	 * 
-	 * Verifies internet connection state
+	 * Verifies internet connection state and connects to the Internet
 	 * 
 	 */
 
@@ -37,7 +37,6 @@ public class InternetConnectionChecker extends Thread {
 		try {
 			sleep(500);
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		try {

@@ -1,6 +1,13 @@
 package EIC1_43.BDA;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import java.util.Date;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  * Classe que trata as mensagens recebidas do facebook como objectos.
@@ -11,12 +18,13 @@ import java.util.Date;
  *
  */
 
-public class FacebookMessage extends Message {
+public class FacebookMessage extends Messages {
 
 	private Date date;
 	private String data;
 	private String hora;
 	private String title;
+	private JButton viewButton;
 	
 	/**
 	 * Construtor da classe. Instancias criadas com base num objecto do tipo Date e uma String.
@@ -31,32 +39,74 @@ public class FacebookMessage extends Message {
 		tratarDataHora();
 	}
 	
+	/**
+	 * Adds action listener to the button
+	 * @param listener
+	 */
+	
+	public void addListner (ActionListener listener) {
+		viewButton.addActionListener(listener);
+	}
+	
+	/**
+	 * Return object date
+	 */
+	
+	@Override
 	public Date getDate() {
 		return date;
 	}
 
+	/**
+	 * Return date
+	 * @return
+	 */
+	
 	public String getData() {
 		return data;
 	}
 
+	/**
+	 * Return hour
+	 * @return
+	 */
+	
 	public String getHora() {
 		return hora;
 	}
 	
-	
+	/**
+	 * Sets date
+	 * @param data
+	 */
 	
 	public void setData(String data) {
 		this.data = data;
 	}
 
+	/**
+	 * Sets hour
+	 * @param hora
+	 */
+	
 	public void setHora(String hora) {
 		this.hora = hora;
 	}
 
+	/**
+	 * Returns title
+	 * @return
+	 */
+	
 	public String getTitle() {
 		return title;
 	}
 
+	/**
+	 * Sets title
+	 * @param title
+	 */
+	
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -129,9 +179,45 @@ public class FacebookMessage extends Message {
 	 * aparecer na lista de resultados da interface grafica com o utilizador.
 	 */
 	
-	public String ObjectRepresention () {
+	@Override
+	public String toStringTxt () {
 		
-		String object =  Title() + "               " + data + "   " + hora;
+		String object =  "facebook" + ";" + title + ";" + super.getContent() + ";" + data + ";" + hora;
 		return object;
 	}
+
+	/**
+	 * Represents the object in the panel
+	 * @return
+	 */
+	
+	public JPanel ObjectRepresentation () {
+		
+		JPanel panelMessage = new JPanel();
+		panelMessage.setPreferredSize(new Dimension(930, 60));
+		panelMessage.setLayout(null);
+		
+		JLabel labelImage = new JLabel(new ImageIcon("images/facebook.png"));
+		labelImage.setBounds(5, 0, 60, 60);
+		JLabel labelOrigem = new JLabel("FACEBOOK");
+		labelOrigem.setBounds(75, 0, 100, 60);
+		JLabel labelTitle = new JLabel(Title());
+		labelTitle.setBounds(180, 0, 200, 60);
+		JLabel labelDate = new JLabel(data);
+		labelDate.setBounds(600, 0, 120, 60);
+		JLabel labelHora = new JLabel(hora);
+		labelHora.setBounds(750, 0, 70, 60);
+		
+		viewButton = new JButton("Ver");
+		viewButton.setBounds(850, 15, 70, 30);
+		
+		panelMessage.add(labelImage); panelMessage.add(labelOrigem);
+		panelMessage.add(labelTitle); panelMessage.add(labelDate);
+		panelMessage.add(labelHora); panelMessage.add(viewButton);
+		
+		panelMessage.setBackground(new Color(103,155,218));
+		
+		return panelMessage;
+	}
+
 }

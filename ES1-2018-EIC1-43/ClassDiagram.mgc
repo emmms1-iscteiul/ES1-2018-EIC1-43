@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ClassDiagram>
+    <Class name="EIC1_43.BDA.FacebookMessage" x="54" y="325">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Extension destinationClassName="EIC1_43.BDA.Messages">
+            <Point x="166" y="243"/>
+        </Extension>
+    </Class>
+    <Class name="EIC1_43.BDA.EmailMessage" x="1031" y="41">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Extension destinationClassName="EIC1_43.BDA.Messages">
+            <Point x="763" y="16"/>
+        </Extension>
+    </Class>
+    <Class name="EIC1_43.BDA.Gui" x="284" y="1043">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="EIC1_43.BDA.App"
+            endpointName="app" kind="Simple"/>
+    </Class>
+    <Class name="EIC1_43.BDA.Main" x="82" y="880">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="EIC1_43.BDA.Facebook" x="100" y="683">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="EIC1_43.BDA.FacebookMessage"
+            endpointName="posts" kind="Simple"/>
+    </Class>
+    <Class name="EIC1_43.BDA.InternetConnectionChecker" x="890" y="746">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="EIC1_43.BDA.App"
+            endpointName="app" kind="Simple"/>
+        <Communication destinationClassName="EIC1_43.BDA.App"/>
+    </Class>
+    <Class name="EIC1_43.BDA.EmailSessionBean" x="1099" y="487">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="EIC1_43.BDA.EmailMessage"
+            endpointName="mails" kind="Simple"/>
+    </Class>
+    <Class name="EIC1_43.BDA.Twitter" x="871" y="381">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="EIC1_43.BDA.TwitterMessage"
+            endpointName="meTweets" kind="Simple"/>
+        <Association destinationClassName="EIC1_43.BDA.TwitterMessage"
+            endpointName="iscteTweets" kind="Simple">
+            <Point x="931" y="318"/>
+        </Association>
+    </Class>
+    <Class name="EIC1_43.BDA.App" x="435" y="471">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Association destinationClassName="EIC1_43.BDA.Twitter"
+            endpointName="twitter" kind="Simple"/>
+        <Association destinationClassName="EIC1_43.BDA.Messages"
+            endpointName="appMessages" kind="Simple">
+            <Point x="508" y="301"/>
+        </Association>
+        <Association destinationClassName="EIC1_43.BDA.Facebook"
+            endpointName="facebook" kind="Simple"/>
+        <Association destinationClassName="EIC1_43.BDA.Gui"
+            endpointName="gui" kind="Simple">
+            <Point x="601" y="1008"/>
+        </Association>
+        <Association destinationClassName="EIC1_43.BDA.EmailSessionBean"
+            endpointName="email" kind="Simple"/>
+        <Communication destinationClassName="EIC1_43.BDA.FacebookMessage"/>
+        <Communication destinationClassName="EIC1_43.BDA.EmailMessage"/>
+        <Communication destinationClassName="EIC1_43.BDA.Gui"/>
+        <Communication destinationClassName="EIC1_43.BDA.Facebook"/>
+        <Communication destinationClassName="EIC1_43.BDA.EmailSessionBean"/>
+        <Communication destinationClassName="EIC1_43.BDA.Twitter"/>
+        <Communication destinationClassName="EIC1_43.BDA.TwitterMessage"/>
+    </Class>
+    <Class name="EIC1_43.BDA.Messages" x="276" y="15">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+    </Class>
+    <Class name="EIC1_43.BDA.TwitterMessage" x="608" y="208">
+        <AttributesDisplayFilter public-accepted="true"
+            private-accepted="true" protected-accepted="true"
+            default-accepted="true" static-accepted="false"/>
+        <MethodDisplayFilter public-accepted="true"
+            private-accepted="false" protected-accepted="false"
+            default-accepted="false" static-accepted="false"
+            accessors-accepted="false" constructors-accepted="false"/>
+        <Extension destinationClassName="EIC1_43.BDA.Messages">
+            <Point x="704" y="130"/>
+        </Extension>
+    </Class>
+</ClassDiagram>
